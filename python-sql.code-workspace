@@ -1,0 +1,17 @@
+{
+    "folders":[
+        {
+            "path": "."
+        }
+    ],
+
+    "settings":{
+        "workbench.panel.defaultLocation": "right",
+        "python.linting.enabled": true,
+        "python.linting.pylintArgs": [
+			"--disable=C0303",
+			"--disable=C0326",
+			"--extension-pkg-whitelist=sql" // disable sql checks
+		],
+    }
+}
