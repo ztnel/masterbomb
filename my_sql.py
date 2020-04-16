@@ -8,6 +8,14 @@ db = mysql.connector.connect(
     database="testdatabase"
 )
 
+users = [("tim", "tech"),
+         ("alan", "lana"),
+         ("sara", "saraaa")]
+
+user_scores = [(45,100),
+               (30,40),
+               (46,126)]
+
 cursor = db.cursor()
 # cursor.execute("CREATE TABLE Test (id int PRIMARY KEY NOT NULL AUTO_INCREMENT, name VARCHAR(50) NOT NULL, created datetime NOT NULL, gender ENUM('M', 'F') NOT NULL)")
 # cursor.execute ("INSERT INTO Test (name, created, gender) VALUES (%s,%s,%s)", ("gio", datetime.now(), "M"))
@@ -18,19 +26,10 @@ cursor = db.cursor()
 # cursor.execute("ALTER TABLE Test CHANGE name first_name VARCHAR(50)")
 # cursor.execute("DESCRIBE Test")
 
-users = [("tim", "tech"),
-         ("alan", "lana"),
-         ("sara", "saraaa")]
-
-user_scores = [(45,100),
-               (30,40),
-               (46,126)]
 # Q1 = "CREATE TABLE Users (id int PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50), passwd VARCHAR(50))"
 # Q2 = "CREATE TABLE Scores (userId int PRIMARY KEY, FOREIGN KEY(userId) REFERENCES Users(id), game1 int DEFAULT 0, game2 int DEFAULT 0)"
-
 # cursor.execute(Q1)
 # cursor.execute(Q2)
-
 # cursor.execute("SHOW TABLES")
 Q3 = "INSERT INTO Users (name, passwd) VALUES (%s,%s)"
 Q4 = "INSERT INTO Scores (userId, game1, game2) VALUES (%s,%s,%s)"

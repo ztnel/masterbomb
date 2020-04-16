@@ -7,6 +7,8 @@
 
     "settings":{
         "workbench.panel.defaultLocation": "right",
+
+        "python.pythonPath": "C:\\Users\\Christian S\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
         "python.linting.enabled": true,
         "python.linting.pylintArgs": [
 			"--disable=C0303",
