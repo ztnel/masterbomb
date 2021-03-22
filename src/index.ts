@@ -3,13 +3,10 @@ import createError from 'http-errors'
 import path from "path";
 import routes from './routes';
 import dotenv from "dotenv";
-import shell from "shelljs";
 
-// Copy all the view templates
-shell.cp( "-R", "src/views", "dist/" );
 dotenv.config();
 
-// port is now available to the Node.js runtime 
+// port is now available to the Node.js runtime
 // as if it were an environment variable
 const port = process.env.SERVER_PORT;
 
@@ -31,7 +28,7 @@ app.use(routes);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // bind statics to app
-app.use(express.static(path.join(__dirname, 'src/public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // start webserver
 app.listen(port, () => {
