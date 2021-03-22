@@ -8,8 +8,6 @@ const http_errors_1 = __importDefault(require("http-errors"));
 const path_1 = __importDefault(require("path"));
 const routes_1 = __importDefault(require("./routes"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const shelljs_1 = __importDefault(require("shelljs"));
-shelljs_1.default.cp("-R", "src/views", "dist/");
 dotenv_1.default.config();
 const port = process.env.SERVER_PORT;
 function loggerMiddleware(request, response, next) {
@@ -23,7 +21,7 @@ app.use(loggerMiddleware);
 app.use(routes_1.default);
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
-app.use(express_1.default.static(path_1.default.join(__dirname, 'src/public')));
+app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
 app.listen(port, () => {
     console.log(`server started at http://localhost:${port}`);
 });
