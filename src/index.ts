@@ -12,8 +12,8 @@ const port = process.env.SERVER_PORT;
 
 // log to console the requests that are made
 function loggerMiddleware(request:express.Request, response:express.Response, next:express.NextFunction) {
-  console.log("Logging middleware: " + `${request.method} ${request.path}`);
-  next();
+    console.log("Logging middleware: " + `${request.method} ${request.path}`);
+    next();
 }
 
 const app = express();
@@ -32,20 +32,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // start webserver
 app.listen(port, () => {
-  console.log(`server started at http://localhost:${ port }`);
+    console.log(`server started at http://localhost:${ port }`);
 });
 
 app.use((request:express.Request, response:express.Response, next:express.NextFunction) => {
-  // forward 404 error
-  next(createError(404));
+    // forward 404 error
+    next(createError(404));
 });
 
 // custom error handler
 app.use((err:createError.HttpError, request:express.Request, response:express.Response) => {
-  // set locals, only providing error in development
-  response.locals.message = err.message;
-  response.locals.error = request.app.get('NODE_ENV') === 'development' ? err : {};
-  // render the error page
-  response.status(err.status || 500);
-  response.render('error');
+    // set locals, only providing error in development
+    response.locals.message = err.message;
+    response.locals.error = request.app.get('NODE_ENV') === 'development' ? err : {};
+    // render the error page
+    response.status(err.status || 500);
+    response.render('error');
 })

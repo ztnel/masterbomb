@@ -9,7 +9,7 @@ routes.use('/users', usersRouter);
 
 /* GET home page */
 routes.get('/', (request:express.Request, response:express.Response, next:express.NextFunction) => {
-  response.render('index', { title: 'Masterbomb' });
+    response.render('index', { title: 'Masterbomb' });
 });
 
 // export module
