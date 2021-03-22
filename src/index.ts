@@ -3,7 +3,10 @@ import createError from 'http-errors'
 import path from "path";
 import routes from './routes';
 import dotenv from "dotenv";
+import shell from "shelljs";
 
+// Copy all the view templates
+shell.cp( "-R", "src/views", "dist/" );
 dotenv.config();
 
 // port is now available to the Node.js runtime 
@@ -18,7 +21,7 @@ function loggerMiddleware(request:express.Request, response:express.Response, ne
 
 const app = express();
 // setup view engine
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '../dist/views'));
 app.set('view engine', 'ejs');
 // add logger middleware to express app
 app.use(loggerMiddleware);
@@ -30,15 +33,13 @@ app.use(express.urlencoded({ extended: false }));
 // bind statics to app
 app.use(express.static(path.join(__dirname, 'src/public')));
 
-// app.get('/', (request:express.Request, response:express.Response, next:express.NextFunction) => {
-//   response.render('index', { title: 'Masterbomb' });
-// });
-
+// start webserver
 app.listen(port, () => {
   console.log(`server started at http://localhost:${ port }`);
 });
 
 app.use((request:express.Request, response:express.Response, next:express.NextFunction) => {
+  // forward 404 error
   next(createError(404));
 });
 

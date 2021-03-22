@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <!-- wrapper -->
+    <div id="wrapper">
+      <!-- user info -->
+      <div id="userInfo">
+        <h2>User Info</h2>
+        <p>
+          <b>Username: </b><span id="userInfoUserName"></span><br>
+          <b>Full Name: </b><span id="userInfoFullName"></span><br>
+          <b>Email: </b><span id="userInfoEmail"></span><br>
+          <b>Age: </b><span id="userInfoAge"></span><br>
+          <b>Location: </b><span id="userInfoLocation"></span><br>
+          <b>Gender: </b><span id="userInfoGender"></span><br>
+        </p>
+      </div>
+      <!-- userlist -->
+      <div id="userList">
+        <h2>User List</h2>
+        <table>
+          <thead>
+            <th>UserName</th>
+            <th>Email</th>
+            <th>Delete?</th>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <!-- add user -->
+      <div id="addUser">
+        <h2>Add User</h2>
+        <fieldset>
+          <input id="inputUserName" type="text" placeholder="Username">
+          <input id="inputUserEmail" type="email" placeholder="Email"><br>
+          <input id="inputUserFullName" type="text" placeholder="Full Name">
+          <input id="inputUserAge" type="text" placeholder="Age"><br>
+          <input id="inputUserLocation" type="text" placeholder="Location">
+          <input type="radio" id="male" name="inputUserGender" value="male">
+          <label for="male">Male</label>
+          <input type="radio" id="female" name="inputUserGender" value="female">
+          <label for="female">Female</label><br>
+          <button id="btnSubmit" type="button">Submit</button>
+        </fieldset>
+      </div>
+    </div>
+    <!-- wrapper -->
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="/javascripts/global.js"></script>
+</html>

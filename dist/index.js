@@ -8,6 +8,8 @@ const http_errors_1 = __importDefault(require("http-errors"));
 const path_1 = __importDefault(require("path"));
 const routes_1 = __importDefault(require("./routes"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const shelljs_1 = __importDefault(require("shelljs"));
+shelljs_1.default.cp("-R", "src/views", "dist/");
 dotenv_1.default.config();
 const port = process.env.SERVER_PORT;
 function loggerMiddleware(request, response, next) {
@@ -15,7 +17,7 @@ function loggerMiddleware(request, response, next) {
     next();
 }
 const app = express_1.default();
-app.set('views', path_1.default.join(__dirname, 'views'));
+app.set('views', path_1.default.join(__dirname, '../dist/views'));
 app.set('view engine', 'ejs');
 app.use(loggerMiddleware);
 app.use(routes_1.default);
