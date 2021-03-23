@@ -1,8 +1,9 @@
 import express from 'express';
-import createError from 'http-errors'
+import createError from 'http-errors';
 import path from "path";
 import routes from './routes';
 import dotenv from "dotenv";
+import pgPromise from "pg-promise";
 
 dotenv.config();
 
@@ -10,18 +11,28 @@ dotenv.config();
 // as if it were an environment variable
 const port = process.env.SERVER_PORT;
 
-// log to console the requests that are made
-function loggerMiddleware(request:express.Request, response:express.Response, next:express.NextFunction) {
-    console.log("Logging middleware: " + `${request.method} ${request.path}`);
-    next();
-}
+// configure postgres with types that pgp accepts
+const config = {
+    database: process.env.PGDATABASE || "postgres",
+    host: process.env.PGHOST || "localhost",
+    port: parseInt(process.env.PGPORT || "5432", 10),
+    user: process.env.PGUSER || "postgres"
+} as Parameters<typeof pgp>[0];
+
+// rename pgp
+const pgp = pgPromise();
+const db = pgp(config);
 
 const app = express();
 // setup view engine
 app.set('views', path.join(__dirname, '../dist/views'));
 app.set('view engine', 'ejs');
+app.set('db', db);
 // add logger middleware to express app
-app.use(loggerMiddleware);
+app.use((request:express.Request, response:express.Response, next:express.NextFunction) => {
+    console.log(`${request.method} ${request.path}`);
+    next();
+});
 // add all routes to app
 app.use(routes);
 // use express types
@@ -48,4 +59,4 @@ app.use((err:createError.HttpError, request:express.Request, response:express.Re
     // render the error page
     response.status(err.status || 500);
     response.render('error');
-})
+});
