@@ -1,11 +1,11 @@
 import express from 'express';
 import { Router } from 'express';
-import usersRouter from './users.routes';
+import suppliersRouter from './suppliers.routes';
 
 const routes = Router();
 
-// connect index router to /users route
-routes.use('/users', usersRouter);
+// connect index router to /suppliers route
+routes.use('/suppliers', suppliersRouter);
 
 /* GET home page */
 routes.get('/', (request:express.Request, response:express.Response, next:express.NextFunction) => {
