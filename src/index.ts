@@ -28,6 +28,7 @@ const app = express();
 app.set('views', path.join(__dirname, '../dist/views'));
 app.set('view engine', 'ejs');
 app.set('db', db);
+
 // add logger middleware to express app
 app.use((request:express.Request, response:express.Response, next:express.NextFunction) => {
     console.log(`${request.method} ${request.path}`);

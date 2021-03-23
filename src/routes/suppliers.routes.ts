@@ -39,7 +39,6 @@ suppliersRouter.get('/add', async (request:express.Request, response:express.Res
     }
 });
 
-
 /** DELETE /suppliers/delete */
 suppliersRouter.get('/delete/:id', async (request:express.Request, response:express.Response) => {
     try {
