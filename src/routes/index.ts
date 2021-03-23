@@ -1,5 +1,5 @@
-import express from 'express';
 import { Router } from 'express';
+import express from 'express';
 import suppliersRouter from './suppliers.routes';
 
 const routes = Router();
