@@ -8,7 +8,7 @@ const routes = Router();
 routes.use('/suppliers', suppliersRouter);
 
 /* GET home page */
-routes.get('/', (request:express.Request, response:express.Response, next:express.NextFunction) => {
+routes.get('/', (_, response:express.Response) => {
     response.render('index', { title: 'Masterbomb' });
 });
 

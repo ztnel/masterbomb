@@ -30,7 +30,7 @@ app.set('view engine', 'ejs');
 app.set('db', db);
 
 // add logger middleware to express app
-app.use((request:express.Request, response:express.Response, next:express.NextFunction) => {
+app.use((request:express.Request, _, next:express.NextFunction) => {
     console.log(`${request.method} ${request.path}`);
     next();
 });
@@ -47,7 +47,7 @@ app.listen(port, () => {
     console.log(`server started at http://localhost:${ port }`);
 });
 
-app.use((request:express.Request, response:express.Response, next:express.NextFunction) => {
+app.use((_1, _2, next:express.NextFunction) => {
     // forward 404 error
     next(createError(404));
 });
