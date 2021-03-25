@@ -1,0 +1,20 @@
+---
+server_port: 5000
+api_base_url: http://localhost:{{ server_port }}
+api_endpoints:
+  suppliers:
+    add:
+      type: POST
+      path: /suppliers/add
+      status: 201
+      data:
+        name: Test Supplier
+        website: www.test-supplier.com
+    all:
+      type: GET
+      path: /suppliers/all
+      status: 200
+    delete:
+      type: DELETE
+      path: /suppliers/delete/
+      status: 201
