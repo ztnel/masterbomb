@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  postgresql:
+    container_name: postgres
+    ports:
+      - "${PGPORT}:${PGPORT}"
+    environment:
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_DB: ${PGDATABASE}
+    image: postgres:latest
