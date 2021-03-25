@@ -7,9 +7,12 @@
     "clean": "rm -rf dist/*",
     "copy-assets": "ts-node tools/assets",
     "lint": "tslint -c tslint.json -p tsconfig.json --fix",
+    "start-db": "docker-compose -f docker/docker-compose.yaml --env-file ../.env up -d",
+    "stop-db": "docker-compose -f docker/docker-compose.yaml --env-file ../.env down",
     "initdb": "ts-node tools/initdb",
     "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
     "tsc": "tsc",
+    "probe-api": "ansible-playbook -i tests/api/inventory/inventory.yaml tests/api/playbooks/main.yaml",
     "dev:start": "npm run build && npm run start",
     "prebuild": "npm run clean",
     "build": "npm run lint && npm run tsc && npm run copy-assets",
@@ -20,7 +23,7 @@
     "url": "git+https://github.com/cSDes1gn/masterbomb.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Christian Sargusingh",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/cSDes1gn/masterbomb/issues"
