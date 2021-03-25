@@ -1,10 +1,10 @@
 
-// data array for populating suppliers
-let suppliers = [];
+// // data array for populating suppliers
+// let suppliers = [];
 
-// DOM Ready
-const form = document.querySelector('form');
+// // DOM Ready
+// const form = document.querySelector('form');
 
-form?.addEventListener('submit', async event => {
-    event.preventDefault();
-});
+// form?.addEventListener('submit', async event => {
+//     event.preventDefault();
+// });
