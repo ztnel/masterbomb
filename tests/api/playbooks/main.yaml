@@ -20,13 +20,32 @@
     # 1. add a supplier
     # 2. get all suppliers
     # 3. delete added supplier
-    - name: Test /supplier endpoints
+    - name: Test POST endpoints
       uri:
         url: "{{ api_base_url }}{{ item.value.path }}"
-        method: "{{ item.value.type }}"
+        method: POST 
         headers:
           accept: application/json
         status_code: "{{ item.value.status }}" 
         body: "{{ item.value.data }}"
         body_format: json
-      loop: "{{ lookup('dict', api_endpoints['suppliers']) }}" 
+      loop: "{{ q('dict', api_endpoints['POST']) }}"
+    
+    - name: Test GET endpoints
+      uri:
+        url: "{{ api_base_url }}{{ item.value.path }}"
+        method: GET 
+        headers:
+          accept: application/json
+        status_code: "{{ item.value.status }}" 
+      loop: "{{ q('dict', api_endpoints['GET']) }}"
+    
+    - name: Test DELETE endpoints
+      uri:
+        url: "{{ api_base_url }}{{ item.value.path }}"
+        method: DELETE 
+        headers:
+          accept: application/json
+        status_code: "{{ item.value.status }}" 
+      loop: "{{ q('dict', api_endpoints['DELETE']) }}"
+    
