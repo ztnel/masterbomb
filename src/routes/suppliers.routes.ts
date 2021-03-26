@@ -35,7 +35,7 @@ suppliersRouter.post('/add', async (request:express.Request, response:express.Re
             RETURNING id;`,
             {...request.body}
         );
-        return response.json({ id });
+        return response.status(201).json({ id });
     } catch (err) {
         // catch errors and log (returning false)
         console.error(err);
