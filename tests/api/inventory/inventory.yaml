@@ -1,3 +1,0 @@
-# localhost
-hosts:
-  ansible_host: localhost

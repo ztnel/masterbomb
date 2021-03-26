@@ -6,7 +6,7 @@ api_endpoints:
     add:
       type: POST
       path: /suppliers/add
-      status: 201
+      status: 200
       data:
         name: Test Supplier
         website: www.test-supplier.com
