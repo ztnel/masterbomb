@@ -25,7 +25,7 @@ suppliersRouter.get('/all', async (request:express.Request, response:express.Res
 });
 
 /** POST /suppliers/add */
-suppliersRouter.get('/add', async (request:express.Request, response:express.Response) => {
+suppliersRouter.post('/add', async (request:express.Request, response:express.Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -45,7 +45,7 @@ suppliersRouter.get('/add', async (request:express.Request, response:express.Res
 });
 
 /** DELETE /suppliers/delete */
-suppliersRouter.get('/delete/:id', async (request:express.Request, response:express.Response) => {
+suppliersRouter.delete('/delete/:id', async (request:express.Request, response:express.Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
