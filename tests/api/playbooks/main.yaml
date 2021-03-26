@@ -20,32 +20,39 @@
     # 1. add a supplier
     # 2. get all suppliers
     # 3. delete added supplier
-    - name: Test POST endpoints
+    - name: Test /suppliers/add
       uri:
-        url: "{{ api_base_url }}{{ item.value.path }}"
+        url: "{{ api_base_url }}/suppliers/add"
         method: POST 
         headers:
           accept: application/json
-        status_code: "{{ item.value.status }}" 
-        body: "{{ item.value.data }}"
+        status_code: "{{ post_status }}"
+        body:
+          name: Test Supplier Name
+          website: www.test-supplier.com
         body_format: json
-      loop: "{{ q('dict', api_endpoints['POST']) }}"
-    
-    - name: Test GET endpoints
+      register: post_response
+
+    - name: Test /suppliers/get/:id
       uri:
-        url: "{{ api_base_url }}{{ item.value.path }}"
+        url: "{{ api_base_url }}/suppliers/get/{{ post_response.json.id.id }}"
         method: GET 
         headers:
           accept: application/json
-        status_code: "{{ item.value.status }}" 
-      loop: "{{ q('dict', api_endpoints['GET']) }}"
+        status_code: "{{ get_status }}"
     
-    - name: Test DELETE endpoints
+    - name: Test /suppliers/all
       uri:
-        url: "{{ api_base_url }}{{ item.value.path }}"
+        url: "{{ api_base_url }}/suppliers/all"
+        method: GET 
+        headers:
+          accept: application/json
+        status_code: "{{ get_status }}"
+
+    - name: Test /suppliers/delete/:id
+      uri:
+        url: "{{ api_base_url }}/suppliers/delete/{{ post_response.json.id.id }}"
         method: DELETE 
         headers:
           accept: application/json
-        status_code: "{{ item.value.status }}" 
-      loop: "{{ q('dict', api_endpoints['DELETE']) }}"
-    
+        status_code: "{{ delete_status }}" 
