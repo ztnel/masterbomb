@@ -12,7 +12,7 @@
     "initdb": "ts-node tools/initdb",
     "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
     "tsc": "tsc",
-    "probe-api": "ansible-playbook -i tests/api/inventory/inventory.yaml tests/api/playbooks/main.yaml",
+    "probe-api": "ansible-playbook --connection=local -i 127.0.0.1, tests/api/playbooks/main.yaml",
     "dev:start": "npm run build && npm run start",
     "prebuild": "npm run clean",
     "build": "npm run lint && npm run tsc && npm run copy-assets",
