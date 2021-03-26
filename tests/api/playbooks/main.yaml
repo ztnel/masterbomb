@@ -3,6 +3,8 @@
 
 - name: Masterbomb API Integration Testing
   hosts: localhost
+  vars_files:
+    - all.yaml
   become: false
 
   pre_tasks:
