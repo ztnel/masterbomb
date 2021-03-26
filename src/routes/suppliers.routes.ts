@@ -24,6 +24,24 @@ suppliersRouter.get('/all', async (request:express.Request, response:express.Res
     }
 });
 
+/** GET /suppliers/get/:id */
+suppliersRouter.get('/get/:id', async (request:express.Request, response:express.Response) => {
+    try {
+        // get database passed by request object
+        const db = request.app.get('db');
+        const suppliers = await db.any(`
+            SELECT * FROM suppliers
+            WHERE id = $[id]`,
+            { id: request.params.id }, (r:any) => r.rowCount
+        );
+        return response.json(suppliers);
+    } catch (err) {
+        console.error(err);
+        response.json({error: err.message || err });
+        return false;
+    }
+});
+
 /** POST /suppliers/add */
 suppliersRouter.post('/add', async (request:express.Request, response:express.Response) => {
     try {
