@@ -34,14 +34,13 @@ app.use((request:express.Request, _, next:express.NextFunction) => {
     console.log(`${request.method} ${request.path}`);
     next();
 });
-// add all routes to app
-app.use(routes);
-// use express types
+// use express types (make sure this is defined in front of the routes!)
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // bind statics to app
 app.use(express.static(path.join(__dirname, 'public')));
-
+// add all routes to app
+app.use(routes);
 // start webserver
 app.listen(port, () => {
     console.log(`server started at http://localhost:${ port }`);
