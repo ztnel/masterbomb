@@ -13,6 +13,7 @@ suppliersRouter.get('/all', async (request:express.Request, response:express.Res
     try {
         // get database passed by request object
         const db = request.app.get('db');
+        // FIX: do not query using * in application runtime, explicitly specify cols to reduce db traffic
         const suppliers = await db.any(`
             SELECT * FROM suppliers`
         );
