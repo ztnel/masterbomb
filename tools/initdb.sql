@@ -45,14 +45,16 @@ create table if not exists manufacturers (
 create table if not exists parts (
     id int not null primary key generated always as identity,
     name varchar(255) not null,
+    manufacturer_id int,
+    supplier_id int,
     unit_price decimal(10,2),
     description varchar(255) null,
     constraint fk_manufacturer
-        foreign key(id)
+        foreign key(manufacturer_id)
             references manufacturers(id)
             on delete set null,
     constraint fk_suppliers
-        foreign key(id)
+        foreign key(supplier_id)
             references suppliers(id)
             on delete set null,
     updated_at timestamp not null default now(),
