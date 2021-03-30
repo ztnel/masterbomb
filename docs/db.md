@@ -20,3 +20,14 @@ docker exec -it postgres /bin/bash
 ...
 psql -U postgres mydb
 ```
+
+## CLI Commands
+List all databases:
+```postgres
+\l
+```
+
+list all tables in database (`+` gives additional info):
+```postgres
+\dt+
+```
