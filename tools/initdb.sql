@@ -4,16 +4,12 @@ drop table if exists projects cascade;
 drop table if exists manufacturers cascade;
 drop table if exists parts cascade;
 
--- --- define auto trigger event for timestamp fields
--- create or replace function trigger_set_timestamp()
--- returns trigger
--- language plpgsql as
--- '
--- BEGIN
---     NEW.updated_at = now();
---     RETURN NEW;
--- END;
--- ';
+--- define auto trigger event for timestamp fields
+--- function def must stay as one line to pass regex
+create or replace function trigger_set_timestamp()
+returns trigger
+language plpgsql as
+'BEGIN NEW.updated_at = now(); RETURN NEW; END;';
 
 --- create 'suppliers' table
 create table if not exists suppliers (
@@ -64,10 +60,16 @@ create table if not exists parts (
 --- create 'bom' table (for many to many parts and projects resolution)
 create table if not exists bom (
     id int not null primary key generated always as identity,
+    project_id int,
+    part_id int,
     constraint fk_project
-        foreign key(id)
+        foreign key(project_id)
             references projects(id)
             on delete cascade,
+    constraint fk_part
+        foreign key(part_id)
+            references part(id)
+            on delete cascade,    
     updated_at timestamp not null default now(),
     created_at timestamp not null default now()
 );
