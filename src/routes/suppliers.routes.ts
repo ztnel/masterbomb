@@ -3,10 +3,10 @@ import { Router } from 'express';
 
 const suppliersRouter = Router();
 
-/** Render suppliers page */
-suppliersRouter.get('/', (_, response:express.Response) => {
-    response.render('suppliers', {title: 'Suppliers'});
-});
+// /** Render suppliers page */
+// suppliersRouter.get('/', (_, response:express.Response) => {
+//     response.render('suppliers', {title: 'Suppliers'});
+// });
 
 /** GET /suppliers/all */
 suppliersRouter.get('/all', async (request:express.Request, response:express.Response) => {
