@@ -1,5 +1,0 @@
-build-essential
-nodejs
-npm
-nginx
-net-tools
