@@ -5,7 +5,7 @@
     method: DELETE 
     headers:
       accept: application/json
-    status_code: "{{ delete_status }}"
+    status_code: "{{ status_code }}"
 
 - name: Test /projects/delete/:id
   uri:
@@ -13,4 +13,12 @@
     method: DELETE 
     headers:
       accept: application/json
-    status_code: "{{ delete_status }}" 
+    status_code: "{{ status_code }}"
+
+- name: Test /manufacturers/delete/:id
+  uri:
+    url: "{{ api_base_url }}/manufacturers/delete/{{ post_response.json.id.id }}"
+    method: DELETE 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}" 
