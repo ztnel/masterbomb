@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import express from 'express';
 import suppliersRouter from './suppliers.routes';
-import manufacturersRouter from './projects.routes';
+import manufacturersRouter from './manufacturers.routes';
 import projectsRouter from './projects.routes';
 
 const routes = Router();
