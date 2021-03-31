@@ -1,0 +1,26 @@
+---
+- name: Test /suppliers/add
+  uri:
+    url: "{{ api_base_url }}/suppliers/add"
+    method: POST 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+    body:
+      name: Test Supplier Name
+      website: www.test-supplier.com
+    body_format: json
+  register: post_response
+
+- name: Test /projects/add
+  uri:
+    url: "{{ api_base_url }}/projects/add"
+    method: POST 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+    body:
+      name: Test Project Name
+      description: This is a test description
+    body_format: json
+  register: post_response

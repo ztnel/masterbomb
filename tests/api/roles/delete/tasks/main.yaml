@@ -1,0 +1,16 @@
+---
+- name: Test /suppliers/delete/:id
+  uri:
+    url: "{{ api_base_url }}/suppliers/delete/{{ post_response.json.id.id }}"
+    method: DELETE 
+    headers:
+      accept: application/json
+    status_code: "{{ delete_status }}"
+
+- name: Test /projects/delete/:id
+  uri:
+    url: "{{ api_base_url }}/projects/delete/{{ post_response.json.id.id }}"
+    method: DELETE 
+    headers:
+      accept: application/json
+    status_code: "{{ delete_status }}" 
