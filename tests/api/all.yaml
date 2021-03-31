@@ -1,0 +1,5 @@
+---
+# webserver port for dev (get from .env?)
+server_port: 5000
+# api basepaths
+api_base_url: http://localhost:{{ server_port }}
