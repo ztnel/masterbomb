@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import express from 'express';
 import suppliersRouter from './suppliers.routes';
+import manufacturersRouter from './projects.routes';
 import projectsRouter from './projects.routes';
 
 const routes = Router();
 
 // connect index router to subroutes route
 routes.use('/suppliers', suppliersRouter);
+routes.use('/manufacturers', manufacturersRouter);
 routes.use('/projects', projectsRouter);
 
 /* GET home page */
