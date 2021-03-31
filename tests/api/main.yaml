@@ -16,15 +16,12 @@
   tasks:
     - name: Execute API POST requests
       include_role:
-        name: 
-          - post
+        name: post
 
-    - name: Execute API GET requests
-      include_role:
-        name:
-          - get
+    # - name: Execute API GET requests
+    #   include_role:
+    #     name: get
 
-    - name: Execute API DELETE requests
-      include_role:
-        name:
-          - delete
+    # - name: Execute API DELETE requests
+    #   include_role:
+    #     name: delete
