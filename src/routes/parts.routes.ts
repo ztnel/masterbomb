@@ -1,10 +1,16 @@
-import express from 'express';
-import { Router } from 'express';
+// parts.routes.ts
+/**
+ * API queries for /parts subroute 
+ *
+ * @module partsRouter
+ */
+
+import { Router, Request, Response } from 'express'
 
 const partsRouter = Router();
 
 /** GET /parts/all */
-partsRouter.get('/all', async (request:express.Request, response:express.Response) => {
+partsRouter.get('/all', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -20,7 +26,7 @@ partsRouter.get('/all', async (request:express.Request, response:express.Respons
 });
 
 /** GET /parts/get/:id */
-partsRouter.get('/get/:id', async (request:express.Request, response:express.Response) => {
+partsRouter.get('/get/:id', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -38,7 +44,7 @@ partsRouter.get('/get/:id', async (request:express.Request, response:express.Res
 });
 
 /** POST /parts/add */
-partsRouter.post('/add', async (request:express.Request, response:express.Response) => {
+partsRouter.post('/add', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -58,7 +64,7 @@ partsRouter.post('/add', async (request:express.Request, response:express.Respon
 });
 
 /** DELETE /parts/delete */
-partsRouter.delete('/delete/:id', async (request:express.Request, response:express.Response) => {
+partsRouter.delete('/delete/:id', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
