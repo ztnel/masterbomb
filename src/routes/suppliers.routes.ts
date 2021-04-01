@@ -1,7 +1,7 @@
 /**
  * suppliers.routes.ts
- * 
- * API queries for /suppliers subroute 
+ *
+ * API queries for /suppliers subroute
  *
  * @module suppliersRouter
  */

@@ -1,12 +1,12 @@
 /**
  * parts.routes.ts
- * 
- * API queries for /parts subroute 
+ *
+ * API queries for /parts subroute
  *
  * @module partsRouter
  */
 
-import { Router, Request, Response } from 'express'
+import { Router, Request, Response } from 'express';
 
 const partsRouter = Router();
 

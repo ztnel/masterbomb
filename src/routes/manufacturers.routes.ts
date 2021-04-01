@@ -1,7 +1,7 @@
 /**
  * manufacturers.routes.ts
- * 
- * API queries for /manufacturers subroute 
+ *
+ * API queries for /manufacturers subroute
  *
  * @module manufacturersRouter
  */

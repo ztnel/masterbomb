@@ -1,7 +1,7 @@
 /**
  * projects.routes.ts
- * 
- * API queries for /projects subroute 
+ *
+ * API queries for /projects subroute
  *
  * @module projectsRouter
  */
