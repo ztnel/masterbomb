@@ -1,15 +1,17 @@
-import express from 'express';
-import { Router } from 'express';
+/**
+ * suppliers.routes.ts
+ * 
+ * API queries for /suppliers subroute 
+ *
+ * @module suppliersRouter
+ */
+
+import { Router, Request, Response} from 'express';
 
 const suppliersRouter = Router();
 
-// /** Render suppliers page */
-// suppliersRouter.get('/', (_, response:express.Response) => {
-//     response.render('suppliers', {title: 'Suppliers'});
-// });
-
 /** GET /suppliers/all */
-suppliersRouter.get('/all', async (request:express.Request, response:express.Response) => {
+suppliersRouter.get('/all', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -26,7 +28,7 @@ suppliersRouter.get('/all', async (request:express.Request, response:express.Res
 });
 
 /** GET /suppliers/get/:id */
-suppliersRouter.get('/get/:id', async (request:express.Request, response:express.Response) => {
+suppliersRouter.get('/get/:id', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -44,7 +46,7 @@ suppliersRouter.get('/get/:id', async (request:express.Request, response:express
 });
 
 /** POST /suppliers/add */
-suppliersRouter.post('/add', async (request:express.Request, response:express.Response) => {
+suppliersRouter.post('/add', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -64,7 +66,7 @@ suppliersRouter.post('/add', async (request:express.Request, response:express.Re
 });
 
 /** DELETE /suppliers/delete */
-suppliersRouter.delete('/delete/:id', async (request:express.Request, response:express.Response) => {
+suppliersRouter.delete('/delete/:id', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');

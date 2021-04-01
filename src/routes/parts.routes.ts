@@ -1,5 +1,6 @@
-// parts.routes.ts
 /**
+ * parts.routes.ts
+ * 
  * API queries for /parts subroute 
  *
  * @module partsRouter

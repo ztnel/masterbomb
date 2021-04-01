@@ -1,10 +1,17 @@
-import express from 'express';
-import { Router } from 'express';
+/**
+ * manufacturers.routes.ts
+ * 
+ * API queries for /manufacturers subroute 
+ *
+ * @module manufacturersRouter
+ */
+
+import { Router, Request, Response } from 'express';
 
 const manufacturersRouter = Router();
 
 /** GET /manufacturers/all */
-manufacturersRouter.get('/all', async (request:express.Request, response:express.Response) => {
+manufacturersRouter.get('/all', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -21,7 +28,7 @@ manufacturersRouter.get('/all', async (request:express.Request, response:express
 });
 
 /** GET /manufacturers/get/:id */
-manufacturersRouter.get('/get/:id', async (request:express.Request, response:express.Response) => {
+manufacturersRouter.get('/get/:id', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -39,7 +46,7 @@ manufacturersRouter.get('/get/:id', async (request:express.Request, response:exp
 });
 
 /** POST /manufacturers/add */
-manufacturersRouter.post('/add', async (request:express.Request, response:express.Response) => {
+manufacturersRouter.post('/add', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -59,7 +66,7 @@ manufacturersRouter.post('/add', async (request:express.Request, response:expres
 });
 
 /** DELETE /manufacturers/delete */
-manufacturersRouter.delete('/delete/:id', async (request:express.Request, response:express.Response) => {
+manufacturersRouter.delete('/delete/:id', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
