@@ -9,7 +9,7 @@ partsRouter.get('/all', async (request:express.Request, response:express.Respons
         // get database passed by request object
         const db = request.app.get('db');
         const parts = await db.any(`
-            SELECT name, description, manufacturer_id, supplier_id, unit_price FROM parts`
+            SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM parts`
         );
         return response.json(parts);
     } catch (err) {
@@ -25,7 +25,7 @@ partsRouter.get('/get/:id', async (request:express.Request, response:express.Res
         // get database passed by request object
         const db = request.app.get('db');
         const parts = await db.any(`
-            SELECT name, description, manufacturer_id, supplier_id, unit_price FROM parts
+            SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM parts
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );

@@ -10,7 +10,7 @@ manufacturersRouter.get('/all', async (request:express.Request, response:express
         const db = request.app.get('db');
         // FIX: do not query using * in application runtime, explicitly specify cols to reduce db traffic
         const manufacturers = await db.any(`
-            SELECT name FROM manufacturers`
+            SELECT id, name FROM manufacturers`
         );
         return response.json(manufacturers);
     } catch (err) {
@@ -26,7 +26,7 @@ manufacturersRouter.get('/get/:id', async (request:express.Request, response:exp
         // get database passed by request object
         const db = request.app.get('db');
         const manufacturers = await db.any(`
-            SELECT name FROM manufacturers
+            SELECT id, name FROM manufacturers
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );

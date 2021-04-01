@@ -15,7 +15,7 @@ suppliersRouter.get('/all', async (request:express.Request, response:express.Res
         const db = request.app.get('db');
         // FIX: do not query using * in application runtime, explicitly specify cols to reduce db traffic
         const suppliers = await db.any(`
-            SELECT name, website FROM suppliers`
+            SELECT id, name, website FROM suppliers`
         );
         return response.json(suppliers);
     } catch (err) {
@@ -31,7 +31,7 @@ suppliersRouter.get('/get/:id', async (request:express.Request, response:express
         // get database passed by request object
         const db = request.app.get('db');
         const suppliers = await db.any(`
-            SELECT name, website FROM suppliers
+            SELECT id, name, website FROM suppliers
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );
