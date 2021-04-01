@@ -58,10 +58,13 @@ create table if not exists parts (
 );
 
 --- create 'bom' table (for many to many parts and projects resolution)
+--- composite primary key (the pair must be unique)
 create table if not exists bom (
-    project_id int references projects(id) on update cascade on delete cascade,
-    part_id int references parts(id) on update cascade,
-    constraint id primary key (part_id, project_id),
+    project_id int not null,
+    part_id int not null,
+    id primary key (part_id, project_id),
+    foreign key (project_id) references projects(id) on update cascade on delete cascade,
+    foreign key (part_id) references parts(id) on update cascade,
     updated_at timestamp not null default now(),
     created_at timestamp not null default now()
 );
