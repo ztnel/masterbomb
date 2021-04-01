@@ -35,4 +35,20 @@
     body:
       name: Test Manufacturer 
     body_format: json
-  register: post_respons
+  register: post_response
+
+- name: Test /parts/add
+  uri:
+    url: "{{ api_base_url }}/parts/add"
+    method: POST 
+    headers:
+      accept: application/json
+    status_code: "{{ status_code }}"
+    body:
+      name: TIP22
+      description: Sample part
+      manufacturer_id:
+      supplier_id: 2
+      unit_price: 4.30
+    body_format: json
+  register: post_response
