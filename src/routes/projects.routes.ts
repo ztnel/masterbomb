@@ -10,7 +10,7 @@ projectsRouter.get('/all', async (request:express.Request, response:express.Resp
         const db = request.app.get('db');
         // FIX: do not query using * in application runtime, explicitly specify cols to reduce db traffic
         const projects = await db.any(`
-            SELECT * FROM projects`
+            SELECT name, description FROM projects`
         );
         return response.json(projects);
     } catch (err) {
@@ -26,7 +26,7 @@ projectsRouter.get('/get/:id', async (request:express.Request, response:express.
         // get database passed by request object
         const db = request.app.get('db');
         const projects = await db.any(`
-            SELECT * FROM projects
+            SELECT name, description FROM projects
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );
