@@ -1,24 +1,24 @@
 /**
- * parts.ts
+ * suppliers.ts
  *
- * API queries for /parts subroute
+ * API queries for /suppliers subroute
  *
- * @module partsRouter
+ * @module suppliersRouter
  */
 
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response} from 'express';
 
-const partsRouter = Router();
+const suppliersRouter = Router();
 
-/** GET /v1/parts/ */
-partsRouter.get('/', async (request:Request, response:Response):Promise<Response> => {
+/** GET /v1/suppliers/ */
+suppliersRouter.get('/', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
-        const parts = await db.any(`
-            SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM parts`
+        const suppliers = await db.any(`
+            SELECT id, name, website FROM suppliers`
         );
-        response.json(parts);
+        response.json(suppliers);
     } catch (err) {
         console.error(err);
         response.status(500).json({ error: err.message || err });
@@ -26,17 +26,17 @@ partsRouter.get('/', async (request:Request, response:Response):Promise<Response
     return response;
 });
 
-/** GET /v1/parts/:id */
-partsRouter.get('/get/:id', async (request:Request, response:Response):Promise<Response> => {
+/** GET /v1/suppliers/:id */
+suppliersRouter.get('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
-        const parts = await db.any(`
-            SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM parts
+        const suppliers = await db.any(`
+            SELECT id, name, website FROM suppliers
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );
-        response.json(parts);
+        response.json(suppliers);
     } catch (err) {
         console.error(err);
         response.status(500).json({ error: err.message || err });
@@ -44,43 +44,41 @@ partsRouter.get('/get/:id', async (request:Request, response:Response):Promise<R
     return response;
 });
 
-/** POST /v1/parts/ */
-partsRouter.post('/', async (request:Request, response:Response):Promise<Response> => {
+/** POST /v1/suppliers/ */
+suppliersRouter.post('/', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
         const id = await db.one(`
-            INSERT INTO parts( name, description, manufacturer_id, supplier_id, unit_price )
-            VALUES( $[name], $[description], $[manufacturer_id], $[supplier_id], $[unit_price] )
+            INSERT INTO suppliers( name, website )
+            VALUES( $[name], $[website] )
             RETURNING id;`,
             {...request.body}
         );
         response.status(201).json({ id });
     } catch (err) {
-        // catch errors and log (returning false)
         console.error(err);
         response.status(500).json({ error: err.message || err });
     }
     return response;
 });
 
-/** DELETE /v1/parts/:id */
-partsRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
+/** DELETE /v1/suppliers/:id */
+suppliersRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
         const id = await db.result(`
-            DELETE FROM parts
+            DELETE FROM suppliers
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );
         response.json({ id });
     } catch (err) {
-        // catch errors and log (returning false)
         console.error(err);
         response.status(500).json({ error: err.message || err });
     }
     return response;
 });
 
-export default partsRouter;
+export default suppliersRouter;
