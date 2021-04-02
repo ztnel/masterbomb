@@ -62,6 +62,7 @@ create table if not exists parts (
 create table if not exists bom (
     project_id int not null,
     part_id int not null,
+    quantity int not null,
     id primary key (part_id, project_id),
     foreign key (project_id) references projects(id) on update cascade on delete cascade,
     foreign key (part_id) references parts(id) on update cascade,
