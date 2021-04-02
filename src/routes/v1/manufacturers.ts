@@ -11,7 +11,7 @@ import { Router, Request, Response } from 'express';
 const manufacturersRouter = Router();
 
 /** GET /v1/manufacturers/ */
-manufacturersRouter.get('/', async (request:Request, response:Response) => {
+manufacturersRouter.get('/', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -19,16 +19,16 @@ manufacturersRouter.get('/', async (request:Request, response:Response) => {
         const manufacturers = await db.any(`
             SELECT id, name FROM manufacturers`
         );
-        return response.json(manufacturers);
+        response.json(manufacturers);
     } catch (err) {
         console.error(err);
-        response.json({error: err.message || err });
-        return false;
+        response.status(500).json({error: err.message || err });
     }
+    return response;
 });
 
 /** GET /v1/manufacturers/:id */
-manufacturersRouter.get('/:id', async (request:Request, response:Response) => {
+manufacturersRouter.get('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -37,16 +37,16 @@ manufacturersRouter.get('/:id', async (request:Request, response:Response) => {
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );
-        return response.json(manufacturers);
+        response.json(manufacturers);
     } catch (err) {
         console.error(err);
-        response.json({error: err.message || err });
-        return false;
+        response.status(500).json({error: err.message || err });
     }
+    return response;
 });
 
 /** POST /v1/manufacturers/ */
-manufacturersRouter.post('/', async (request:Request, response:Response) => {
+manufacturersRouter.post('/', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -56,17 +56,17 @@ manufacturersRouter.post('/', async (request:Request, response:Response) => {
             RETURNING id;`,
             {...request.body}
         );
-        return response.status(201).json({ id });
+        response.status(201).json({ id });
     } catch (err) {
         // catch errors and log (returning false)
         console.error(err);
-        response.json({error: err.message || err });
-        return false;
+        response.status(500).json({error: err.message || err });
     }
+    return response;
 });
 
 /** DELETE /v1/manufacturers/ */
-manufacturersRouter.delete('/:id', async (request:Request, response:Response) => {
+manufacturersRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -75,13 +75,13 @@ manufacturersRouter.delete('/:id', async (request:Request, response:Response) =>
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );
-        return response.json({ id });
+        response.json({ id });
     } catch (err) {
         // catch errors and log (returning false)
         console.error(err);
-        response.json({error: err.message || err });
-        return false;
+        response.status(500).json({error: err.message || err });
     }
+    return response;
 });
 
 export default manufacturersRouter;

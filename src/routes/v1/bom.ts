@@ -11,7 +11,7 @@ import { Router, Request, Response } from 'express';
 const bomRouter = Router();
 
 /** GET /v1/bom/ */
-bomRouter.get('/', async (request:Request, response:Response) => {
+bomRouter.get('/', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -19,16 +19,16 @@ bomRouter.get('/', async (request:Request, response:Response) => {
         const bom = await db.any(`
             SELECT id, name, description FROM bom`
         );
-        return response.json(bom);
+        response.json(bom);
     } catch (err) {
         console.error(err);
-        response.json({error: err.message || err });
-        return false;
+        response.status(500).json({error: err.message || err });
     }
+    return response;
 });
 
 /** GET /v1/bom/:id */
-bomRouter.get('/get/:id', async (request:Request, response:Response) => {
+bomRouter.get('/get/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -37,16 +37,16 @@ bomRouter.get('/get/:id', async (request:Request, response:Response) => {
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );
-        return response.json(bom);
+        response.json(bom);
     } catch (err) {
         console.error(err);
-        response.json({error: err.message || err });
-        return false;
+        response.status(500).json({ error: err.message || err });
     }
+    return response;
 });
 
 /** POST /v1/bom/ */
-bomRouter.post('/', async (request:Request, response:Response) => {
+bomRouter.post('/', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -56,13 +56,12 @@ bomRouter.post('/', async (request:Request, response:Response) => {
             RETURNING id;`,
             {...request.body}
         );
-        return response.status(201).json({ id });
+        response.status(201).json({ id });
     } catch (err) {
-        // catch errors and log (returning false)
         console.error(err);
-        response.json({error: err.message || err });
-        return false;
+        response.status(500).json({ error: err.message || err });
     }
+    return response;
 });
 
 export default bomRouter;

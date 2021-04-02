@@ -11,24 +11,23 @@ import { Router, Request, Response} from 'express';
 const suppliersRouter = Router();
 
 /** GET /v1/suppliers/ */
-suppliersRouter.get('/', async (request:Request, response:Response) => {
+suppliersRouter.get('/', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
-        // FIX: do not query using * in application runtime, explicitly specify cols to reduce db traffic
         const suppliers = await db.any(`
             SELECT id, name, website FROM suppliers`
         );
-        return response.json(suppliers);
+        response.json(suppliers);
     } catch (err) {
         console.error(err);
-        response.json({error: err.message || err });
-        return false;
+        response.status(500).json({ error: err.message || err });
     }
+    return response;
 });
 
 /** GET /v1/suppliers/:id */
-suppliersRouter.get('/:id', async (request:Request, response:Response) => {
+suppliersRouter.get('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -37,16 +36,16 @@ suppliersRouter.get('/:id', async (request:Request, response:Response) => {
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );
-        return response.json(suppliers);
+        response.json(suppliers);
     } catch (err) {
         console.error(err);
-        response.json({error: err.message || err });
-        return false;
+        response.status(500).json({ error: err.message || err });
     }
+    return response;
 });
 
 /** POST /v1/suppliers/ */
-suppliersRouter.post('/', async (request:Request, response:Response) => {
+suppliersRouter.post('/', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -56,17 +55,17 @@ suppliersRouter.post('/', async (request:Request, response:Response) => {
             RETURNING id;`,
             {...request.body}
         );
-        return response.status(201).json({ id });
+        response.status(201).json({ id });
     } catch (err) {
         // catch errors and log (returning false)
         console.error(err);
-        response.json({error: err.message || err });
-        return false;
+        response.status(500).json({ error: err.message || err });
     }
+    return response;
 });
 
 /** DELETE /v1/suppliers/:id */
-suppliersRouter.delete('/:id', async (request:Request, response:Response) => {
+suppliersRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -75,13 +74,13 @@ suppliersRouter.delete('/:id', async (request:Request, response:Response) => {
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );
-        return response.json({ id });
+        response.json({ id });
     } catch (err) {
         // catch errors and log (returning false)
         console.error(err);
-        response.json({error: err.message || err });
-        return false;
+        response.status(500).json({ error: err.message || err });
     }
+    return response;
 });
 
 export default suppliersRouter;
