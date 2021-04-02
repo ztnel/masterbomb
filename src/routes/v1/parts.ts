@@ -1,25 +1,24 @@
 /**
- * suppliers.routes.ts
+ * parts.ts
  *
- * API queries for /suppliers subroute
+ * API queries for /parts subroute
  *
- * @module suppliersRouter
+ * @module partsRouter
  */
 
-import { Router, Request, Response} from 'express';
+import { Router, Request, Response } from 'express';
 
-const suppliersRouter = Router();
+const partsRouter = Router();
 
-/** GET /suppliers/all */
-suppliersRouter.get('/all', async (request:Request, response:Response) => {
+/** GET /v1/parts/ */
+partsRouter.get('/', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
-        // FIX: do not query using * in application runtime, explicitly specify cols to reduce db traffic
-        const suppliers = await db.any(`
-            SELECT id, name, website FROM suppliers`
+        const parts = await db.any(`
+            SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM parts`
         );
-        return response.json(suppliers);
+        return response.json(parts);
     } catch (err) {
         console.error(err);
         response.json({error: err.message || err });
@@ -27,17 +26,17 @@ suppliersRouter.get('/all', async (request:Request, response:Response) => {
     }
 });
 
-/** GET /suppliers/get/:id */
-suppliersRouter.get('/get/:id', async (request:Request, response:Response) => {
+/** GET /v1/parts/:id */
+partsRouter.get('/get/:id', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
-        const suppliers = await db.any(`
-            SELECT id, name, website FROM suppliers
+        const parts = await db.any(`
+            SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM parts
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );
-        return response.json(suppliers);
+        return response.json(parts);
     } catch (err) {
         console.error(err);
         response.json({error: err.message || err });
@@ -45,14 +44,14 @@ suppliersRouter.get('/get/:id', async (request:Request, response:Response) => {
     }
 });
 
-/** POST /suppliers/add */
-suppliersRouter.post('/add', async (request:Request, response:Response) => {
+/** POST /v1/parts/ */
+partsRouter.post('/', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
         const id = await db.one(`
-            INSERT INTO suppliers( name, website )
-            VALUES( $[name], $[website] )
+            INSERT INTO parts( name, description, manufacturer_id, supplier_id, unit_price )
+            VALUES( $[name], $[description], $[manufacturer_id], $[supplier_id], $[unit_price] )
             RETURNING id;`,
             {...request.body}
         );
@@ -65,13 +64,13 @@ suppliersRouter.post('/add', async (request:Request, response:Response) => {
     }
 });
 
-/** DELETE /suppliers/delete */
-suppliersRouter.delete('/delete/:id', async (request:Request, response:Response) => {
+/** DELETE /v1/parts/:id */
+partsRouter.delete('/:id', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
         const id = await db.result(`
-            DELETE FROM suppliers
+            DELETE FROM parts
             WHERE id = $[id]`,
             { id: request.params.id }, (r:any) => r.rowCount
         );
@@ -84,4 +83,4 @@ suppliersRouter.delete('/delete/:id', async (request:Request, response:Response)
     }
 });
 
-export default suppliersRouter;
+export default partsRouter;

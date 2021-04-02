@@ -1,5 +1,5 @@
 /**
- * projects.routes.ts
+ * projects.ts
  *
  * API queries for /projects subroute
  *
@@ -10,8 +10,8 @@ import { Router, Request, Response } from 'express';
 
 const projectsRouter = Router();
 
-/** GET /projects/all */
-projectsRouter.get('/all', async (request:Request, response:Response) => {
+/** GET /v1/projects/ */
+projectsRouter.get('/', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -27,8 +27,8 @@ projectsRouter.get('/all', async (request:Request, response:Response) => {
     }
 });
 
-/** GET /projects/get/:id */
-projectsRouter.get('/get/:id', async (request:Request, response:Response) => {
+/** GET /v1/projects/:id */
+projectsRouter.get('/:id', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -45,8 +45,8 @@ projectsRouter.get('/get/:id', async (request:Request, response:Response) => {
     }
 });
 
-/** POST /projects/add */
-projectsRouter.post('/add', async (request:Request, response:Response) => {
+/** POST /v1/projects/ */
+projectsRouter.post('/', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -65,8 +65,8 @@ projectsRouter.post('/add', async (request:Request, response:Response) => {
     }
 });
 
-/** DELETE /projects/delete */
-projectsRouter.delete('/delete/:id', async (request:Request, response:Response) => {
+/** DELETE /v1/projects/:id */
+projectsRouter.delete('/:id', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');

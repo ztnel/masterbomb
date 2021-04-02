@@ -1,5 +1,5 @@
 /**
- * manufacturers.routes.ts
+ * manufacturers.ts
  *
  * API queries for /manufacturers subroute
  *
@@ -10,8 +10,8 @@ import { Router, Request, Response } from 'express';
 
 const manufacturersRouter = Router();
 
-/** GET /manufacturers/all */
-manufacturersRouter.get('/all', async (request:Request, response:Response) => {
+/** GET /v1/manufacturers/ */
+manufacturersRouter.get('/', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -27,8 +27,8 @@ manufacturersRouter.get('/all', async (request:Request, response:Response) => {
     }
 });
 
-/** GET /manufacturers/get/:id */
-manufacturersRouter.get('/get/:id', async (request:Request, response:Response) => {
+/** GET /v1/manufacturers/:id */
+manufacturersRouter.get('/:id', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -45,8 +45,8 @@ manufacturersRouter.get('/get/:id', async (request:Request, response:Response) =
     }
 });
 
-/** POST /manufacturers/add */
-manufacturersRouter.post('/add', async (request:Request, response:Response) => {
+/** POST /v1/manufacturers/ */
+manufacturersRouter.post('/', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
@@ -65,8 +65,8 @@ manufacturersRouter.post('/add', async (request:Request, response:Response) => {
     }
 });
 
-/** DELETE /manufacturers/delete */
-manufacturersRouter.delete('/delete/:id', async (request:Request, response:Response) => {
+/** DELETE /v1/manufacturers/ */
+manufacturersRouter.delete('/:id', async (request:Request, response:Response) => {
     try {
         // get database passed by request object
         const db = request.app.get('db');
