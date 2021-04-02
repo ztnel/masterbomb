@@ -1,7 +1,7 @@
 ---
 - name: Test /suppliers/add
   uri:
-    url: "{{ api_base_url }}/suppliers/add"
+    url: "{{ base_url }}{{ base_path }}/suppliers/"
     method: POST 
     headers:
       accept: application/json
@@ -14,7 +14,7 @@
 
 - name: Test /projects/add
   uri:
-    url: "{{ api_base_url }}/projects/add"
+    url: "{{ base_url }}{{ base_path }}/projects/"
     method: POST 
     headers:
       accept: application/json
@@ -27,7 +27,7 @@
 
 - name: Test /manufacturers/add
   uri:
-    url: "{{ api_base_url }}/manufacturers/add"
+    url: "{{ base_url }}{{ base_path }}/manufacturers/"
     method: POST 
     headers:
       accept: application/json
@@ -39,7 +39,7 @@
 
 - name: Test /parts/add
   uri:
-    url: "{{ api_base_url }}/parts/add"
+    url: "{{ base_url }}{{ base_path }}/parts/"
     method: POST 
     headers:
       accept: application/json
