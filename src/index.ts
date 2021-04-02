@@ -2,7 +2,8 @@ import express from 'express';
 import { NextFunction, Response, Request } from 'express';
 import createError from 'http-errors';
 import path from "path";
-import routes from './routes';
+import pageRoutes from './routes';
+import apiRoutes from './api';
 import dotenv from "dotenv";
 import pgPromise from "pg-promise";
 
@@ -41,8 +42,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // bind statics to app
 app.use(express.static(path.join(__dirname, 'public')));
-// add all routes to app
-app.use(routes);
+// add page routes
+app.use(pageRoutes);
+app.use(apiRoutes);
 // start webserver
 app.listen(port, () => {
     console.log(`server started at http://localhost:${ port }`);
