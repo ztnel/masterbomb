@@ -1,17 +1,17 @@
 import { Router } from 'express';
 import express from 'express';
-import suppliersRouter from './suppliers.routes';
-import manufacturersRouter from './manufacturers.routes';
-import projectsRouter from './projects.routes';
-import partsRouter from './parts.routes';
+import suppliersRouter from './v1/suppliers';
+import manufacturersRouter from './v1/manufacturers';
+import projectsRouter from './v1/projects';
+import partsRouter from './v1/parts';
 
 const routes = Router();
 
 // connect index router to subroutes route
-routes.use('/parts', partsRouter);
-routes.use('/suppliers', suppliersRouter);
-routes.use('/manufacturers', manufacturersRouter);
-routes.use('/projects', projectsRouter);
+routes.use('/v1/parts', partsRouter);
+routes.use('/v1/suppliers', suppliersRouter);
+routes.use('/v1/manufacturers', manufacturersRouter);
+routes.use('/v1/projects', projectsRouter);
 
 /* GET home page */
 routes.get('/', (_req, response:express.Response) => {
