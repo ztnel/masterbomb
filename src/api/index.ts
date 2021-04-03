@@ -3,10 +3,12 @@ import suppliersRouter from './v1/routes/suppliers';
 import manufacturersRouter from './v1/routes/manufacturers';
 import projectsRouter from './v1/routes/projects';
 import partsRouter from './v1/routes/parts';
+import bomRouter from './v1/routes/bom';
 
 const apiRoutes = Router();
 
 // connect index router to subroutes route
+apiRoutes.use('/v1/bom', bomRouter);
 apiRoutes.use('/v1/parts', partsRouter);
 apiRoutes.use('/v1/suppliers', suppliersRouter);
 apiRoutes.use('/v1/manufacturers', manufacturersRouter);
