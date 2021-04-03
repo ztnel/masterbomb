@@ -63,7 +63,7 @@ create table if not exists bom (
     project_id int not null,
     part_id int not null,
     quantity int not null,
-    id primary key (part_id, project_id),
+    primary key (project_id, part_id),
     foreign key (project_id) references projects(id) on update cascade on delete cascade,
     foreign key (part_id) references parts(id) on update cascade,
     updated_at timestamp not null default now(),
