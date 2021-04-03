@@ -7,14 +7,14 @@
  */
 
 import { Router, Request, Response } from 'express';
+import { get_db } from '../../../db';
 
 const partsRouter = Router();
 
 /** GET /v1/parts/ */
-partsRouter.get('/', async (request:Request, response:Response):Promise<Response> => {
+partsRouter.get('/', async (_request:Request, response:Response):Promise<Response> => {
     try {
-        // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const parts = await db.any(`
             SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM parts`
         );
@@ -29,12 +29,11 @@ partsRouter.get('/', async (request:Request, response:Response):Promise<Response
 /** GET /v1/parts/:id */
 partsRouter.get('/get/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
-        // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const parts = await db.any(`
             SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM parts
             WHERE id = $[id]`,
-            { id: request.params.id }, (r:any) => r.rowCount
+            { id: request.params.id }
         );
         response.json(parts);
     } catch (err) {
@@ -47,8 +46,7 @@ partsRouter.get('/get/:id', async (request:Request, response:Response):Promise<R
 /** POST /v1/parts/ */
 partsRouter.post('/', async (request:Request, response:Response):Promise<Response> => {
     try {
-        // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const id = await db.one(`
             INSERT INTO parts( name, description, manufacturer_id, supplier_id, unit_price )
             VALUES( $[name], $[description], $[manufacturer_id], $[supplier_id], $[unit_price] )
@@ -66,8 +64,7 @@ partsRouter.post('/', async (request:Request, response:Response):Promise<Respons
 /** DELETE /v1/parts/:id */
 partsRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
-        // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const id = await db.result(`
             DELETE FROM parts
             WHERE id = $[id]`,

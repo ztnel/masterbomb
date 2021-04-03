@@ -7,14 +7,14 @@
  */
 
 import { Router, Request, Response } from 'express';
+import { get_db } from '../../../db';
 
 const projectsRouter = Router();
 
 /** GET /v1/projects/ */
-projectsRouter.get('/', async (request:Request, response:Response):Promise<Response> => {
+projectsRouter.get('/', async (_request:Request, response:Response):Promise<Response> => {
     try {
-        // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         // FIX: do not query using * in application runtime, explicitly specify cols to reduce db traffic
         const projects = await db.any(`
             SELECT id, name, description FROM projects`
@@ -30,12 +30,11 @@ projectsRouter.get('/', async (request:Request, response:Response):Promise<Respo
 /** GET /v1/projects/:id */
 projectsRouter.get('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
-        // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const projects = await db.any(`
             SELECT id, name, description FROM projects
             WHERE id = $[id]`,
-            { id: request.params.id }, (r:any) => r.rowCount
+            { id: request.params.id }
         );
         response.json(projects);
     } catch (err) {
@@ -48,8 +47,7 @@ projectsRouter.get('/:id', async (request:Request, response:Response):Promise<Re
 /** POST /v1/projects/ */
 projectsRouter.post('/', async (request:Request, response:Response):Promise<Response> => {
     try {
-        // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const id = await db.one(`
             INSERT INTO projects( name, description )
             VALUES( $[name], $[description] )
@@ -67,8 +65,7 @@ projectsRouter.post('/', async (request:Request, response:Response):Promise<Resp
 /** DELETE /v1/projects/:id */
 projectsRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
-        // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const id = await db.result(`
             DELETE FROM projects
             WHERE id = $[id]`,

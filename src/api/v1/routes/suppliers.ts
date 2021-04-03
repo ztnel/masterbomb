@@ -7,14 +7,15 @@
  */
 
 import { Router, Request, Response} from 'express';
+import { get_db } from '../../../db';
 
 const suppliersRouter = Router();
 
 /** GET /v1/suppliers/ */
-suppliersRouter.get('/', async (request:Request, response:Response):Promise<Response> => {
+suppliersRouter.get('/', async (_request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const suppliers = await db.any(`
             SELECT id, name, website FROM suppliers`
         );
@@ -30,11 +31,11 @@ suppliersRouter.get('/', async (request:Request, response:Response):Promise<Resp
 suppliersRouter.get('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const suppliers = await db.any(`
             SELECT id, name, website FROM suppliers
             WHERE id = $[id]`,
-            { id: request.params.id }, (r:any) => r.rowCount
+            { id: request.params.id }
         );
         response.json(suppliers);
     } catch (err) {
@@ -48,7 +49,7 @@ suppliersRouter.get('/:id', async (request:Request, response:Response):Promise<R
 suppliersRouter.post('/', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const id = await db.one(`
             INSERT INTO suppliers( name, website )
             VALUES( $[name], $[website] )
@@ -67,7 +68,7 @@ suppliersRouter.post('/', async (request:Request, response:Response):Promise<Res
 suppliersRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const id = await db.result(`
             DELETE FROM suppliers
             WHERE id = $[id]`,

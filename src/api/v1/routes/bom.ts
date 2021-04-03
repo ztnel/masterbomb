@@ -6,17 +6,19 @@
  * @module bomRouter
  */
 
+
 import { Router, Request, Response } from 'express';
 import { BomRequest } from '../interfaces/bom';
+import { get_db } from '../../../db';
 
 const bomRouter = Router();
 
 /** GET /v1/bom/?project_id=<int> */
 bomRouter.get('/', async (request:BomRequest, response:Response):Promise<Response> => {
-    // parse query string
+    // type guard for request obj
     try {
         // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const bom = await db.any(`
             SELECT part_id, quantity FROM bom
             WHERE project_id=$[project_id]`,
@@ -33,8 +35,7 @@ bomRouter.get('/', async (request:BomRequest, response:Response):Promise<Respons
 /** POST /v1/bom/ */
 bomRouter.post('/', async (request:Request, response:Response):Promise<Response> => {
     try {
-        // get database passed by request object
-        const db = request.app.get('db');
+        const db = get_db();
         const id = await db.any(`
             INSERT INTO bom( project_id, part_id, quantity )
             VALUES( $[project_id], $[part_id], $[quantity] );`,
