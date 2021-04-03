@@ -4,8 +4,9 @@ import createError from 'http-errors';
 import path from "path";
 import pageRoutes from './routes';
 import apiRoutes from './api';
+import { connect_db } from './db';
 import dotenv from "dotenv";
-import pgPromise from "pg-promise";
+
 
 // load environment settings
 dotenv.config();
@@ -14,23 +15,21 @@ dotenv.config();
 // as if it were an environment variable
 const port = process.env.SERVER_PORT;
 
-// configure postgres with types that pgp accepts
-const config = {
-    database: process.env.PGDATABASE || "postgres",
-    host: process.env.PGHOST || "localhost",
-    port: parseInt(process.env.PGPORT || "5432", 10),
-    user: process.env.PGUSER || "postgres"
-} as Parameters<typeof pgp>[0];
+// need to validate the types on the process.env vars
+if (process.env.PGDATABASE === undefined ||
+    process.env.PGHOST === undefined ||
+    process.env.PGPORT === undefined ||
+    process.env.PGUSER === undefined) {
+    throw new Error("Database configuration fields invalid. Please check the .env file in root");
+}
 
-// rename pgp
-const pgp = pgPromise();
-const db = pgp(config);
+// configure db
+connect_db(process.env.PGDATABASE, process.env.PGHOST, process.env.PGPORT, process.env.PGUSER);
 
 const app = express();
 // setup view engine
 app.set('views', path.join(__dirname, '../dist/views'));
 app.set('view engine', 'ejs');
-app.set('db', db);
 
 // add logger middleware to express app
 app.use((request:Request, _res, next:NextFunction) => {
