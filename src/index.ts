@@ -4,7 +4,7 @@ import createError from 'http-errors';
 import path from "path";
 import pageRoutes from './routes';
 import apiRoutes from './api';
-import { connect_db } from './db';
+import { postgres } from './db';
 import dotenv from "dotenv";
 
 
@@ -15,16 +15,8 @@ dotenv.config();
 // as if it were an environment variable
 const port = process.env.SERVER_PORT;
 
-// need to validate the types on the process.env vars
-if (process.env.PGDATABASE === undefined ||
-    process.env.PGHOST === undefined ||
-    process.env.PGPORT === undefined ||
-    process.env.PGUSER === undefined) {
-    throw new Error("Database configuration fields invalid. Please check the .env file in root");
-}
-
-// configure db
-connect_db(process.env.PGDATABASE, process.env.PGHOST, process.env.PGPORT, process.env.PGUSER);
+// connect db
+postgres.connect_db();
 
 const app = express();
 // setup view engine
