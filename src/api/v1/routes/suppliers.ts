@@ -7,7 +7,7 @@
  */
 
 import { Router, Request, Response} from 'express';
-import { get_db } from '../../../db';
+import { postgres } from '../../../db';
 
 const suppliersRouter = Router();
 
@@ -15,7 +15,7 @@ const suppliersRouter = Router();
 suppliersRouter.get('/', async (_request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
-        const db = get_db();
+        const db = postgres.get_db();
         const suppliers = await db.any(`
             SELECT id, name, website FROM suppliers`
         );
@@ -31,7 +31,7 @@ suppliersRouter.get('/', async (_request:Request, response:Response):Promise<Res
 suppliersRouter.get('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
-        const db = get_db();
+        const db = postgres.get_db();
         const suppliers = await db.any(`
             SELECT id, name, website FROM suppliers
             WHERE id = $[id]`,
@@ -49,7 +49,7 @@ suppliersRouter.get('/:id', async (request:Request, response:Response):Promise<R
 suppliersRouter.post('/', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
-        const db = get_db();
+        const db = postgres.get_db();
         const id = await db.one(`
             INSERT INTO suppliers( name, website )
             VALUES( $[name], $[website] )
@@ -68,7 +68,7 @@ suppliersRouter.post('/', async (request:Request, response:Response):Promise<Res
 suppliersRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
         // get database passed by request object
-        const db = get_db();
+        const db = postgres.get_db();
         const id = await db.result(`
             DELETE FROM suppliers
             WHERE id = $[id]`,

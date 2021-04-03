@@ -7,14 +7,14 @@
  */
 
 import { Router, Request, Response } from 'express';
-import { get_db } from '../../../db';
+import { postgres } from '../../../db';
 
 const partsRouter = Router();
 
 /** GET /v1/parts/ */
 partsRouter.get('/', async (_request:Request, response:Response):Promise<Response> => {
     try {
-        const db = get_db();
+        const db = postgres.get_db();
         const parts = await db.any(`
             SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM parts`
         );
@@ -29,7 +29,7 @@ partsRouter.get('/', async (_request:Request, response:Response):Promise<Respons
 /** GET /v1/parts/:id */
 partsRouter.get('/get/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
-        const db = get_db();
+        const db = postgres.get_db();
         const parts = await db.any(`
             SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM parts
             WHERE id = $[id]`,
@@ -46,7 +46,7 @@ partsRouter.get('/get/:id', async (request:Request, response:Response):Promise<R
 /** POST /v1/parts/ */
 partsRouter.post('/', async (request:Request, response:Response):Promise<Response> => {
     try {
-        const db = get_db();
+        const db = postgres.get_db();
         const id = await db.one(`
             INSERT INTO parts( name, description, manufacturer_id, supplier_id, unit_price )
             VALUES( $[name], $[description], $[manufacturer_id], $[supplier_id], $[unit_price] )
@@ -64,7 +64,7 @@ partsRouter.post('/', async (request:Request, response:Response):Promise<Respons
 /** DELETE /v1/parts/:id */
 partsRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
     try {
-        const db = get_db();
+        const db = postgres.get_db();
         const id = await db.result(`
             DELETE FROM parts
             WHERE id = $[id]`,
