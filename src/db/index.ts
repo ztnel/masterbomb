@@ -2,16 +2,16 @@ import dotenv from "dotenv";
 import pgPromise from "pg-promise";
 
 export interface IPostgres{
-    database:string,
-    host:string,
-    port:number,
-    user:string,
+    database:string;
+    host:string;
+    port:number;
+    user:string;
     db: pgPromise.IDatabase<any,any>;
     get_db: () => pgPromise.IDatabase<any,any>;
-};
+}
 
-export class Postgres implements IPostgres { 
-    
+export class Postgres implements IPostgres {
+
     // class attributes
     database:string;
     host:string;
@@ -19,7 +19,7 @@ export class Postgres implements IPostgres {
     user:string;
     db: pgPromise.IDatabase<any,any>;
 
-    constructor(database:string, host:string, port:string, user:string) { 
+    constructor(database:string, host:string, port:string, user:string) {
         this.database = database;
         this.host = host;
         this.port = parseInt( port, 10);
@@ -36,14 +36,14 @@ export class Postgres implements IPostgres {
             host: this.host,
             port: this.port,
             user: this.user
-        } as Parameters<typeof pgp>[0]; 
+        } as Parameters<typeof pgp>[0];
         this.db = pgp(config);
     }
 
-    get_db(): pgPromise.IDatabase<any,any>{ 
+    get_db(): pgPromise.IDatabase<any,any>{
         return this.db;
     }
-};
+}
 
 dotenv.config();
 
