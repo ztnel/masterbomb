@@ -6,6 +6,7 @@ import pageRoutes from './routes';
 import apiRoutes from './api';
 import { postgres } from './db';
 import dotenv from "dotenv";
+import { logger_middleware } from './api/v1/middlewares/logger';
 
 
 // load environment settings
@@ -23,11 +24,7 @@ const app = express();
 app.set('views', path.join(__dirname, '../dist/views'));
 app.set('view engine', 'ejs');
 
-// add logger middleware to express app
-app.use((request:Request, _res, next:NextFunction) => {
-    console.log(`${request.method} ${request.path}`);
-    next();
-});
+app.use(logger_middleware);
 // use express types (make sure this is defined in front of the routes!)
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
