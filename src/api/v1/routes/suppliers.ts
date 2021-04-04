@@ -5,9 +5,10 @@
  *
  * @module suppliersRouter
  */
-
+import { errors } from 'pg-promise';
 import { Router, Request, Response} from 'express';
 import { postgres } from '../../../db';
+import { type_guard } from '../interfaces/suppliers';
 
 const suppliersRouter = Router();
 
@@ -29,18 +30,28 @@ suppliersRouter.get('/', async (_request:Request, response:Response):Promise<Res
 
 /** GET /v1/suppliers/:id */
 suppliersRouter.get('/:id', async (request:Request, response:Response):Promise<Response> => {
-    try {
-        // get database passed by request object
+    // add manual validation of param
+    if (type_guard(request.params)) {
         const db = postgres.get_db();
-        const suppliers = await db.any(`
-            SELECT id, name, website FROM suppliers
-            WHERE id = $[id]`,
-            { id: request.params.id }
-        );
-        response.json(suppliers);
-    } catch (err) {
-        console.error(err);
-        response.status(500).json({ error: err.message || err });
+        try {
+            // using db.one as we expect to get at a single row to be returned
+            const suppliers = await db.one(`
+                SELECT id, name, website FROM suppliers
+                WHERE id = $[id]`,
+                { id: request.params.id }
+            );
+            response.json(suppliers);
+        } catch (err) {
+            console.error(err);
+            // since the param is the pk more than one response row is not possible
+            if (err instanceof errors.QueryResultError) {
+                response.status(404).json({error: 'Requested supplier not found' });
+            } else {
+                response.status(500).json({ error: 'The server experienced an internal error' });
+            }
+        }
+    } else {
+        response.status(400).json({ error: 'Bad Request' });
     }
     return response;
 });
