@@ -8,7 +8,7 @@
 import { errors } from 'pg-promise';
 import { Router, Request, Response} from 'express';
 import { postgres } from '../../../db';
-import { type_guard } from '../interfaces/suppliers';
+import { type_guard } from '../interfaces/params';
 
 const suppliersRouter = Router();
 
