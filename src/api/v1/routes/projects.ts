@@ -8,6 +8,7 @@
 
 import { Router, Request, Response } from 'express';
 import { postgres } from '../../../db';
+import { type_guard } from '../interfaces/projects';
 
 const projectsRouter = Router();
 
