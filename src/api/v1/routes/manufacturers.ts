@@ -6,8 +6,10 @@
  * @module manufacturersRouter
  */
 
+import { errors } from 'pg-promise';
 import { Router, Request, Response } from 'express';
 import { postgres } from '../../../db';
+import { type_guard } from '../interfaces/params';
 
 const manufacturersRouter = Router();
 
@@ -29,17 +31,26 @@ manufacturersRouter.get('/', async (_request:Request, response:Response):Promise
 
 /** GET /v1/manufacturers/:id */
 manufacturersRouter.get('/:id', async (request:Request, response:Response):Promise<Response> => {
-    try {
-        const db = postgres.get_db();
-        const manufacturers = await db.any(`
-            SELECT id, name FROM manufacturers
-            WHERE id = $[id]`,
-            { id: request.params.id }
-        );
-        response.json(manufacturers);
-    } catch (err) {
-        console.error(err);
-        response.status(500).json({error: err.message || err });
+    if (type_guard(request.params)) {
+        try {
+            const db = postgres.get_db();
+            const manufacturers = await db.one(`
+                SELECT id, name FROM manufacturers
+                WHERE id = $[id]`,
+                { id: request.params.id }
+            );
+            response.json(manufacturers);
+        } catch (err) {
+            console.error(err);
+            // since the param is the pk more than one response row is not possible
+            if (err instanceof errors.QueryResultError) {
+                response.status(404).json({error: 'Manufacturer not found' });
+            } else {
+                response.status(500).json({ error: 'The server experienced an internal error' });
+            }
+        }
+    } else {
+        response.status(400).json({ error: 'Bad Request: id param must be an integer' });
     }
     return response;
 });
@@ -64,17 +75,21 @@ manufacturersRouter.post('/', async (request:Request, response:Response):Promise
 
 /** DELETE /v1/manufacturers/ */
 manufacturersRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
-    try {
-        const db = postgres.get_db();
-        const id = await db.result(`
-            DELETE FROM manufacturers
-            WHERE id = $[id]`,
-            { id: request.params.id }, (r:any) => r.rowCount
-        );
-        response.json({ id });
-    } catch (err) {
-        console.error(err);
-        response.status(500).json({error: err.message || err });
+    if (type_guard(request.params)) {
+        try {
+            const db = postgres.get_db();
+            const id = await db.result(`
+                DELETE FROM manufacturers
+                WHERE id = $[id]`,
+                { id: request.params.id }, (r:any) => r.rowCount
+            );
+            response.json({ id });
+        } catch (err) {
+            console.error(err);
+            response.status(500).json({error: err.message || err });
+        }
+    } else {
+        response.status(400).json({ error: 'Bad Request: id param must be an integer' });
     }
     return response;
 });

@@ -5,6 +5,7 @@
  *
  * @module suppliersRouter
  */
+
 import { errors } from 'pg-promise';
 import { Router, Request, Response} from 'express';
 import { postgres } from '../../../db';
@@ -45,13 +46,13 @@ suppliersRouter.get('/:id', async (request:Request, response:Response):Promise<R
             console.error(err);
             // since the param is the pk more than one response row is not possible
             if (err instanceof errors.QueryResultError) {
-                response.status(404).json({error: 'Requested supplier not found' });
+                response.status(404).json({error: 'Supplier not found' });
             } else {
                 response.status(500).json({ error: 'The server experienced an internal error' });
             }
         }
     } else {
-        response.status(400).json({ error: 'Bad Request' });
+        response.status(400).json({ error: 'Bad Request: id param must be an integer' });
     }
     return response;
 });
@@ -77,18 +78,22 @@ suppliersRouter.post('/', async (request:Request, response:Response):Promise<Res
 
 /** DELETE /v1/suppliers/:id */
 suppliersRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
-    try {
-        // get database passed by request object
-        const db = postgres.get_db();
-        const id = await db.result(`
-            DELETE FROM suppliers
-            WHERE id = $[id]`,
-            { id: request.params.id }, (r:any) => r.rowCount
-        );
-        response.json({ id });
-    } catch (err) {
-        console.error(err);
-        response.status(500).json({ error: err.message || err });
+    if (type_guard(request.params)) {
+        try {
+            // get database passed by request object
+            const db = postgres.get_db();
+            const id = await db.result(`
+                DELETE FROM suppliers
+                WHERE id = $[id]`,
+                { id: request.params.id }, (r:any) => r.rowCount
+            );
+            response.json({ id });
+        } catch (err) {
+            console.error(err);
+            response.status(500).json({ error: err.message || err });
+        }
+    } else {
+        response.status(400).json({ error: 'Bad Request: id param must be an integer' });
     }
     return response;
 });

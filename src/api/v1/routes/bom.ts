@@ -7,13 +7,12 @@
  */
 
 import { Router, Request, Response } from 'express';
-import { BomRequest } from '../interfaces/bom';
 import { postgres } from '../../../db';
 
 const bomRouter = Router();
 
 /** GET /v1/bom/?project_id=<int> */
-bomRouter.get('/', async (request:BomRequest, response:Response):Promise<Response> => {
+bomRouter.get('/', async (request:Request, response:Response):Promise<Response> => {
     // type guard for request obj
     try {
         const db = postgres.get_db();
