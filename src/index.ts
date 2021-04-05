@@ -1,13 +1,12 @@
 import express from 'express';
-import { NextFunction, Response, Request } from 'express';
 import createError from 'http-errors';
 import path from "path";
 import pageRoutes from './routes';
 import apiRoutes from './api';
-import { postgres } from './db';
 import dotenv from "dotenv";
+import { postgres } from './db';
 import { logger_middleware } from './api/v1/middlewares/logger';
-
+import { NextFunction, Response, Request } from 'express';
 
 // load environment settings
 dotenv.config();
