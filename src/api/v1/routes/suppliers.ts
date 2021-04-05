@@ -9,7 +9,7 @@
 import { errors } from 'pg-promise';
 import { Router, Request, Response} from 'express';
 import { postgres } from '../../../db';
-import { type_guard } from '../interfaces/params';
+import { pk_guard } from '../interfaces/params';
 
 const suppliersRouter = Router();
 
@@ -32,7 +32,7 @@ suppliersRouter.get('/', async (_request:Request, response:Response):Promise<Res
 /** GET /v1/suppliers/:id */
 suppliersRouter.get('/:id', async (request:Request, response:Response):Promise<Response> => {
     // add manual validation of param
-    if (type_guard(request.params)) {
+    if (pk_guard(request.params)) {
         const db = postgres.get_db();
         try {
             // using db.one as we expect to get at a single row to be returned
@@ -78,7 +78,7 @@ suppliersRouter.post('/', async (request:Request, response:Response):Promise<Res
 
 /** DELETE /v1/suppliers/:id */
 suppliersRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
-    if (type_guard(request.params)) {
+    if (pk_guard(request.params)) {
         try {
             // get database passed by request object
             const db = postgres.get_db();

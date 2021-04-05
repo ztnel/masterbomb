@@ -5,7 +5,7 @@ export type ReqParam = {
     id: number;
 } & ParamsDictionary;
 
-// define basic type guard
-export function type_guard(params:ParamsDictionary): params is ReqParam {
-    return !isNaN(parseInt(params.id, 10));
+// define regex type guard only allowing positive ints
+export function pk_guard(params:ParamsDictionary): params is ReqParam {
+    return /^\d+$/.test(params.id);
 }

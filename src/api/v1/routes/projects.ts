@@ -9,7 +9,7 @@
 import { errors } from 'pg-promise';
 import { Router, Request, Response } from 'express';
 import { postgres } from '../../../db';
-import { type_guard } from '../interfaces/params';
+import { pk_guard } from '../interfaces/params';
 
 const projectsRouter = Router();
 
@@ -31,7 +31,7 @@ projectsRouter.get('/', async (_request:Request, response:Response):Promise<Resp
 
 /** GET /v1/projects/:id */
 projectsRouter.get('/:id', async (request:Request, response:Response):Promise<Response> => {
-    if (type_guard(request.params)) {
+    if (pk_guard(request.params)) {
         try {
             const db = postgres.get_db();
             const projects = await db.one(`
@@ -75,7 +75,7 @@ projectsRouter.post('/', async (request:Request, response:Response):Promise<Resp
 
 /** DELETE /v1/projects/:id */
 projectsRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
-    if (type_guard(request.params)) {
+    if (pk_guard(request.params)) {
         try {
             const db = postgres.get_db();
             const id = await db.result(`
