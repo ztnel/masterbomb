@@ -43,7 +43,7 @@ create table if not exists parts (
     name varchar(255) not null,
     manufacturer_id int,
     supplier_id int,
-    unit_price decimal(10,2),
+    unit_price decimal(10,2) not null,
     description varchar(255) null,
     constraint fk_manufacturer
         foreign key(manufacturer_id)
@@ -63,6 +63,7 @@ create table if not exists bom (
     project_id int not null,
     part_id int not null,
     quantity int not null,
+    net_price decimal(10,2) not null,
     primary key (project_id, part_id),
     foreign key (project_id) references projects(id) on update cascade on delete cascade,
     foreign key (part_id) references parts(id) on update cascade,
