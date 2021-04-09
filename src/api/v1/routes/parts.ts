@@ -43,7 +43,7 @@ partsRouter.get('/:id', async (request:Request, response:Response):Promise<Respo
             console.error(err);
             // since the param is the pk more than one response row is not possible
             if (err instanceof errors.QueryResultError) {
-                response.status(404).json({error: 'Requested supplier not found' });
+                response.status(404).json({error: 'Requested part not found' });
             } else {
                 response.status(500).json({ error: 'The server experienced an internal error' });
             }
