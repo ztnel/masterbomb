@@ -17,7 +17,10 @@ bomRouter.get('/', async (request:Request, response:Response):Promise<Response> 
     try {
         const db = postgres.get_db();
         const bom = await db.any(`
-            SELECT project_id, part_id, quantity, net_price FROM bom
+            SELECT parts.name AS "Part Name",
+            (SELECT name AS "Supplier" FROM suppliers WHERE id=parts.supplier_id),
+            (SELECT name AS "Manufacturer" FROM manufacturers WHERE id=parts.manufacturer_id),
+            bom.quantity AS "Quantity", bom.net_price AS "Net Price" FROM bom JOIN parts on bom.part_id=parts.id
             WHERE project_id=$[project_id]`,
             {...request.query}
         );
