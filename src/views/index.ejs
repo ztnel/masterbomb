@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title><%= title %></title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+  </head>
+  <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">
         <img src="/static/MB.png" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -11,75 +17,60 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="#">BOM<span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/">BOM<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Parts</a>
+            <a class="nav-link" href="/parts">Parts</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Projects</a>
+            <a class="nav-link" href="/projects">Projects</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Suppliers</a>
+            <a class="nav-link" href="/suppliers">Suppliers</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Manufacturers</a>
+            <a class="nav-link" href="/manufacturers">Manufacturers</a>
           </li>
         </ul>
       </div>
     </nav>
-    <title><%= title %></title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel='stylesheet' href='/stylesheets/style.css'/>
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <!-- wrapper -->
-    <div id="wrapper">
-      <!-- user info -->
-      <div id="userInfo">
-        <h2>User Info</h2>
-        <p>
-          <b>Username: </b><span id="userInfoUserName"></span><br>
-          <b>Full Name: </b><span id="userInfoFullName"></span><br>
-          <b>Email: </b><span id="userInfoEmail"></span><br>
-          <b>Age: </b><span id="userInfoAge"></span><br>
-          <b>Location: </b><span id="userInfoLocation"></span><br>
-          <b>Gender: </b><span id="userInfoGender"></span><br>
-        </p>
-      </div>
-      <!-- userlist -->
-      <div id="userList">
-        <h2>User List</h2>
-        <table>
-          <thead>
-            <th>UserName</th>
-            <th>Email</th>
-            <th>Delete?</th>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-      </div>
-      <!-- add user -->
-      <div id="addUser">
-        <h2>Add User</h2>
-        <fieldset>
-          <input id="inputUserName" type="text" placeholder="Username">
-          <input id="inputUserEmail" type="email" placeholder="Email"><br>
-          <input id="inputUserFullName" type="text" placeholder="Full Name">
-          <input id="inputUserAge" type="text" placeholder="Age"><br>
-          <input id="inputUserLocation" type="text" placeholder="Location">
-          <input type="radio" id="male" name="inputUserGender" value="male">
-          <label for="male">Male</label>
-          <input type="radio" id="female" name="inputUserGender" value="female">
-          <label for="female">Female</label><br>
-          <button id="btnSubmit" type="button">Submit</button>
-        </fieldset>
-      </div>
+    <div class="container-fluid">
+      <h1>Welcome to Masterbomb</h1>
+      <p>Browse the bom tables below to get started</p>
+      <h2>Project 1</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Part Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Supplier</th>
+            <th scope="col">Manufacturer</th>
+            <th scope="col">Unit Price ($)</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Net Price ($)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mardsklndsaklndlsandlksandlakndlkandlksandklnlankdnlasndknaskk</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <!-- wrapper -->
   </body>
 </html>
