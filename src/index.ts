@@ -49,5 +49,5 @@ app.use((err:createError.HttpError, request:Request, response:Response) => {
     response.locals.error = request.app.get('NODE_ENV') === 'development' ? err : {};
     // render the error page
     response.status(err.status || 500);
-    response.render('error');
+    response.render('not_found', {title: "Not Found"});
 });
