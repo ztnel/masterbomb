@@ -1,0 +1,13 @@
+body {
+  background-color: rgb(40, 46, 51);
+  color:azure;
+}
+
+.table-ctrl {
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+h1 {
+  padding: 3%;
+}
