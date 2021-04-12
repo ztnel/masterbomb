@@ -4,8 +4,14 @@ body {
 }
 
 .table-ctrl {
-  padding-top: 2%;
   padding-bottom: 2%;
+}
+
+.btn-icon {
+  fill: currentColor;
+  margin-right: 1rem;
+  width:16px;
+  height:16px;
 }
 
 h1 {
