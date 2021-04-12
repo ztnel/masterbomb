@@ -18,15 +18,13 @@
             <tr>
               <th scope="col">Supplier</th>
               <th scope="col">Website</th>
-              <th scope="col">Last Updated</th>
             </tr>
           </thead>
           <tbody>
-            <% for (var i = 0; i < quotation.length; i++) { %>
+            <% for (let i = 0; i < suppliers.length; i++) { %>
               <tr>
-                <td><%= quotation[i].dimension %></td>
-                <td><%= quotation[i].quantity %></td>
-                <td><%= quotation[i].quantity %></td>
+                <td><%= suppliers[i].name %></td>
+                <td><%= suppliers[i].website %></td>
               </tr> 
             <% } %>
           </tbody>
