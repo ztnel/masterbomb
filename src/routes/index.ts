@@ -26,9 +26,9 @@ pageRoutes.get('/projects', (_req, response:express.Response) => {
 /* GET suppliers page */
 pageRoutes.get('/suppliers', (_req, response:express.Response) => {
     // axios request for all suppliers
-    
+
     // pass ejs the supplier list
-    response.render('pages/suppliers', 
+    response.render('pages/suppliers',
         { title: 'Suppliers', suppliers: supplier_list });
 });
 
