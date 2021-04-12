@@ -10,7 +10,7 @@
     "start-db": "docker-compose -f docker/docker-compose.yaml --env-file ../.env up -d",
     "stop-db": "docker-compose -f docker/docker-compose.yaml --env-file ../.env down",
     "initdb": "ts-node tools/initdb",
-    "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
+    "dev": "nodemon --watch src -e ts,ejs,css --exec npm run dev:start",
     "tsc": "tsc",
     "probe-api": "cd tests/api && ansible-playbook --connection=local -i 127.0.0.1, main.yaml && cd ../..",
     "dev:start": "npm run build && npm run start",
@@ -44,6 +44,7 @@
     "tslint": "^6.1.3"
   },
   "dependencies": {
+    "@primer/octicons": "^13.0.0",
     "axios": "^0.21.1",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
