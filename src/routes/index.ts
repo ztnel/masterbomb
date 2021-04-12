@@ -36,7 +36,6 @@ pageRoutes.get('/suppliers', (_req, response:express.Response) => {
             { title: 'Suppliers', suppliers: axios_response.data }
         );
     });
-
 });
 
 /* GET manufacturers page */
