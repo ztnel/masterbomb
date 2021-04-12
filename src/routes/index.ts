@@ -9,23 +9,32 @@ pageRoutes.get('/', (_req, response:express.Response) => {
 });
 
 /* GET parts page */
+pageRoutes.get('/bom', (_req, response:express.Response) => {
+    response.render('pages/bom', { title: 'Bill of Materials' });
+});
+
+/* GET parts page */
 pageRoutes.get('/parts', (_req, response:express.Response) => {
-    response.render('pages/parts', { title: 'Parts List' });
+    response.render('pages/parts', { title: 'Parts' });
 });
 
 /* GET projects page */
 pageRoutes.get('/projects', (_req, response:express.Response) => {
-    response.render('pages/projects', { title: 'Project List' });
+    response.render('pages/projects', { title: 'Projects' });
 });
 
 /* GET suppliers page */
 pageRoutes.get('/suppliers', (_req, response:express.Response) => {
-    response.render('pages/suppliers', { title: 'Supplier List' });
+    // axios request for all suppliers
+    
+    // pass ejs the supplier list
+    response.render('pages/suppliers', 
+        { title: 'Suppliers', suppliers: supplier_list });
 });
 
 /* GET manufacturers page */
 pageRoutes.get('/manufacturers', (_req, response:express.Response) => {
-    response.render('pages/manufacturers', { title: 'Manufacturers List' });
+    response.render('pages/manufacturers', { title: 'Manufacturers' });
 });
 
 export default pageRoutes;
