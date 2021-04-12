@@ -8,7 +8,31 @@
   </header>
   <body>
     <div class="container-fluid">
-      <h1>Nothing Here Yet...</h1>
+      <h1>
+        Suppliers
+        <small class="text-muted"> List of part retailers</small>
+      </h1>
+        <div class="table-responsive-sm">
+          <table class="table table-dark table-bordered table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Supplier</th>
+              <th scope="col">Website</th>
+              <th scope="col">Last Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (var i = 0; i < quotation.length; i++) { %>
+              <tr>
+                <td><%= quotation[i].dimension %></td>
+                <td><%= quotation[i].quantity %></td>
+                <td><%= quotation[i].quantity %></td>
+              </tr> 
+            <% } %>
+          </tbody>
+          </table>
+        </div>
+
     </div>
   </body>
   <footer>
