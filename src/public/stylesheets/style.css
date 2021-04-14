@@ -26,11 +26,11 @@ h1 {
   color:azure; 
 }
 .form-control {
-  background-color:rgb(23, 26, 29);
   color: azure;
+  background-color:rgb(41, 47, 53);
 }
 input[type=text]:focus{
-  outline: 2px solid rgb(110, 129, 148);
-  background-color:rgb(41, 47, 53);
+  outline: 2px solid rgb(95, 182, 197);
   color: azure;
+  background-color:rgb(23, 26, 29);
 }
