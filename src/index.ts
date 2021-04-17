@@ -27,7 +27,7 @@ app.use(logger_middleware);
 // use express types (make sure this is defined in front of the routes!)
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// bind statics to app
+// serve statics in public folder
 app.use(express.static(path.join(__dirname, 'public')));
 // add page routes
 app.use(pageRoutes);

@@ -28,9 +28,9 @@
   },
   "exclude": [
     "node_modules",
-    "src/public"
+    "public"
   ],
   "include": [
     "./src/**/*.ts"
-  ]
+, "src/public/js/main.js"  ]
 }
