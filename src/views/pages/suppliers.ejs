@@ -1,43 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- include('../partials/head') %> 
+    <%- include('../components/head') %>
   </head>
-  <header>
-    <%- include('../partials/header') %> 
-  </header>
+  <header><%- include('../components/header') %></header>
   <body>
     <div class="container-fluid">
       <h1>
         Suppliers
         <small class="text-muted"> List of part retailers</small>
       </h1>
-      <%- include('../partials/tablectrl') %>
+      <%- include('../components/tablectrl') %>
       <div class="table-responsive-sm">
         <table class="table table-dark table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Supplier</th>
-            <th scope="col">Website</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (let i = 0; i < suppliers.length; i++) { %>
+          <thead>
+            <tr>
+              <th scope="col">Supplier</th>
+              <th scope="col">Website</th>
+              <th scope="col">Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let i = 0; i < suppliers.length; i++) { %>
             <tr>
               <td><%= suppliers[i].name %></td>
-              <td><a href="http://<%= suppliers[i].website %>"><%= suppliers[i].website %></a></td>
-            </tr> 
-          <% } %>
-        </tbody>
+              <td>
+                <a href="http://<%= suppliers[i].website %>"
+                  ><%= suppliers[i].website %></a
+                >
+              </td>
+              <td><%-include('../components/buttons/deletebtn') %></td>
+            </tr>
+            <% } %>
+          </tbody>
         </table>
       </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
     <script src="/js/main.js"></script>
   </body>
-  <footer>
-    <%- include('../partials/footer') %> 
-  </footer>
+  <footer><%- include('../components/footer') %></footer>
 </html>
