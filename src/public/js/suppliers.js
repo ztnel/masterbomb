@@ -94,28 +94,32 @@ function post_supplier(event) {
     })
 }
 
-// post new supplier
+// delete one or more suppliers
+// FIX: async callbacks
 function delete_supplier(event) {
     event.preventDefault();
     var ids = get_id_selection();
     // start delete request
-    ids.forEach(id => {
-        let endpoint = `${suppliers_endpoint}${id}`;
-        console.log(`API DELETE ${endpoint}`);
-        $.ajax({
-            url: endpoint,
-            type: 'DELETE',
-            dataType: 'json',
-            success: function(response) {
-                console.log(response);
-            },
-            error: function(response) {
-                console.log(response);
-                console.error("API request failed");
-                alert("API Request Failed");
-            }
-        });
-    });
-    getState();
-    $remove.prop('disabled', true);
+    $.when(
+        ids.forEach(id => {
+            let endpoint = `${suppliers_endpoint}${id}`;
+            console.log(`API DELETE ${endpoint}`);
+            $.ajax({
+                url: endpoint,
+                type: 'DELETE',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(response) {
+                    console.log(response);
+                    console.error("API request failed");
+                    alert("API Request Failed");
+                }
+            });
+        })
+    ).then( () => {
+        getState();
+        $remove.prop('disabled', true);
+    })
 }
