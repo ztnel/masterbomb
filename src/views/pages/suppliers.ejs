@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link
+      href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css"
+      rel="stylesheet"
+    />
     <%- include('../components/head') %>
   </head>
   <header><%- include('../components/header') %></header>
@@ -11,23 +15,28 @@
         <small class="text-muted"> List of part retailers</small>
       </h1>
       <div class="btn-group d-flex add-btn" role="group" aria-label="...">
-        <%- include('../components/buttons/addbtn') %> <%-
-        include('../components/buttons/deletebtn') %>
+        <%- include('../components/buttons/addbtn', {id: "addSupplier"}) %> <%-
+        include('../components/buttons/deletebtn', {id: "deleteSupplier"}) %>
       </div>
       <div class="table-responsive-sm">
-        <table class="table table-dark table-bordered table-hover">
+        <table
+          id="suppliersTable"
+          class="table table-dark table-bordered table-hover"
+          data-checkbox-header="false"
+          data-click-to-select="true"
+        >
           <thead>
             <tr>
-              <th scope="col">Supplier</th>
-              <th scope="col">Website</th>
-              <th scope="col">Select</th>
+              <th data-field="state" data-checkbox="true"></th>
+              <th data-field="name" scope="col">Supplier</th>
+              <th data-field="website" scope="col">Website</th>
             </tr>
           </thead>
-          <tbody></tbody>
         </table>
       </div>
     </div>
     <%- include('../components/modal') %>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
     <script
       src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
