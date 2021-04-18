@@ -1,6 +1,7 @@
 // global suppliers state
 const suppliers_endpoint = '/v1/suppliers/';
 var suppliers = [];
+var $table = $('#suppliersTable');
 
 // DOM Ready
 $(() => {
@@ -8,7 +9,8 @@ $(() => {
     getState();
     // Add supplier modal click
     $('#addSupplier').on('click', add);
-    $('#postSupplier').on('click', post);
+    $('#postSupplier').on('click', post_supplier);
+    $('#deleteSupplier').on('click', delete_supplier);
 });
 
 // populate table with current state
@@ -16,26 +18,19 @@ function getState() {
     console.log("Fetching supplier table state");
     var table_content = '';
     // ajax call to suppliers api
+    console.log(`API GET ${suppliers_endpoint}`);
     $.get({
-        url: suppliers_endpoint,
-        dataType: 'JSON'
+        url: suppliers_endpoint
     }).then((data) => {
-        console.log(`API GET ${suppliers_endpoint} with: `, {...data});
         // update global state
-        suppliers = data;
+        suppliers = data.reverse();
+        console.log("Response: ", suppliers);
         // inject html for table
-        $.each(data, (key, value) => {
-            table_content += '<tr>';
-            table_content += '<td>' + value.name + '</td>';
-            table_content += '<td>' + value.website + '</td>';
-            table_content += '</tr>';
-        });
-        $('table tbody').html(table_content);
+        $table.bootstrapTable({data: suppliers})
     }).catch(() => {
         console.error("API request failed");
         alert("API Request Failed");
     });
-    // pass table html to
 }
 
 // spawn supplier form modal
@@ -45,7 +40,7 @@ function add(event) {
 }
 
 // post new supplier
-function post(event) {
+function post_supplier(event) {
     console.log("Validating supplier form");
     event.preventDefault();
     // basic form validation
@@ -57,7 +52,7 @@ function post(event) {
     });
     if (error_flag == true) {
         console.error("Validation failed");
-        alert("Enter non-empty fields");
+        alert("Enter all required fields");
         return false;
     }
     // start post request
@@ -76,6 +71,29 @@ function post(event) {
        // hide modal
        $('#supplierModal').modal('toggle');
        // rerequest get requests
+       getState();
+    }).catch(() => {
+        console.error("API request failed");
+        alert("API Request Failed");
+    })
+}
+
+// post new supplier
+function delete_supplier(event) {
+    event.preventDefault();
+    // start delete request
+    const newSupplier = {
+        'name': $('#supplierForm #supplierName').val(),
+        'website': $('#supplierForm #supplierWebsite').val()
+    };
+    let endpoint = `${suppliers_endpoint}/${id}`;
+    console.log(`API DELETE ${endpoint}`);
+    $.delete({
+        data: newSupplier,
+        url: suppliers_endpoint,
+        dataType:'JSON'
+    }).then(() => {
+       // rerequest list
        getState();
     }).catch(() => {
         console.error("API request failed");
