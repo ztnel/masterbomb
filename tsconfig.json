@@ -31,6 +31,6 @@
     "public"
   ],
   "include": [
-    "./src/**/*.ts"
-, "src/public/js/main.js"  ]
+    "./src/**/*.ts", "src/public/js/suppliers.js"
+  ]
 }
