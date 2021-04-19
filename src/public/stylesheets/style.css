@@ -18,6 +18,15 @@ h1 {
   padding: 3%;
 }
 
+.footer {
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+  width: 100%;
+  height: 60px; /* Set the fixed height of the footer here */
+  line-height: 60px; /* Vertically center the text there */
+}
+
 /* table loader */
 .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading {
   background: rgb(40, 46, 51);
