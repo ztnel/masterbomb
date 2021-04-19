@@ -1,25 +1,29 @@
 // global suppliers state
 const suppliers_endpoint = '/v1/suppliers/';
 var suppliers = [];
-var $table = $('#suppliersTable');
+var $table = $('#suppliersTable').bootstrapTable();
 var $remove = $('#deleteSupplier');
+var $add = $('#addSupplier');
+var $post = $('#postSupplier');
 var selections = [];
 
 // DOM Ready
 $(() => {
-    console.log("Suppliers DOM Ready");
-    getState();
-    // Add supplier modal click
-    $('#addSupplier').on('click', add);
-    $('#postSupplier').on('click', post_supplier);
+    $add.on('click', add);
+    $post.on('click', post_supplier);
     $remove.on('click', delete_supplier);
     $remove.prop('disabled', true);
     $table.on('check.bs.table uncheck.bs.table ' + 'check-all.bs.table uncheck-all.bs.table',function () {
         $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
         // save your data, here just save the current page
         selections = get_id_selection();
-        console.log(selections);
-    })
+    });
+    // once data is loaded into table hide the loading screen
+    $table.on('post-body.bs.table', function (e, args) {
+        $table.bootstrapTable('hideLoading');
+    });
+    console.log("Suppliers DOM Ready");
+    getState();
 });
 
 // get the ids of all selected elements
@@ -29,9 +33,14 @@ function get_id_selection () {
     })
 }
 
+function loading_template() {
+    return '<div class="spinner-border text-light" role="status"><span class="sr-only">Loading...</span></div>'
+}
+
 // populate table with current state
 function getState() {
-    $table.bootstrapTable("destroy");
+    console.log("Load start");
+    $table.bootstrapTable('showLoading');
     console.log("Fetching supplier table state");
     // ajax call to suppliers api
     console.log(`API GET ${suppliers_endpoint}`);
@@ -41,8 +50,8 @@ function getState() {
         // update global state
         suppliers = data.reverse();
         console.log("Response: ", suppliers);
-        // inject html for table
-        $table.bootstrapTable({data: suppliers});
+        // inject html for table use load for event listener
+        $table.bootstrapTable('load', suppliers);
     }).catch(() => {
         console.error("API request failed");
         alert("API Request Failed");
