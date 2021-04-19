@@ -18,6 +18,14 @@ h1 {
   padding: 3%;
 }
 
+/* table loader */
+.bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading {
+  background: rgb(40, 46, 51);
+}
+.table-bordered {
+  border: 1px solid #3e4144;
+}
+
 /* dark mode for modals */
 .modal-content {
   background-color: rgb(40, 46, 51);
