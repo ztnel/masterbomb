@@ -51,7 +51,7 @@ function getState() {
         suppliers = data.reverse();
         console.log("Response: ", suppliers);
         // inject html for table use load for event listener
-        $table.bootstrapTable('load', suppliers);
+        setTimeout(() => {$table.bootstrapTable('load', suppliers)}, 2000);
     }).catch(() => {
         console.error("API request failed");
         alert("API Request Failed");
