@@ -4,17 +4,26 @@ var suppliers = [];
 var $table = $('#suppliersTable').bootstrapTable();
 var $remove = $('#deleteSupplier');
 var $add = $('#addSupplier');
+var $edit = $('#editSupplier');
 var $post = $('#postSupplier');
+var $put = $('#putSupplier');
 var selections = [];
 
 // DOM Ready
 $(() => {
+    $('#nav-item-suppliers').addClass('active');
     $add.on('click', add);
     $post.on('click', post_supplier);
+    $put.on('click', put_supplier);
+    $edit.on('click', edit);
     $remove.on('click', delete_supplier);
+    // disable conditional buttons
     $remove.prop('disabled', true);
+    $edit.prop('disabled', true);
+    // register table events
     $table.on('check.bs.table uncheck.bs.table ' + 'check-all.bs.table uncheck-all.bs.table',function () {
         $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
+        $edit.prop('disabled', $table.bootstrapTable('getSelections').length !== 1);
         // save your data, here just save the current page
         selections = get_id_selection();
     });
@@ -39,7 +48,6 @@ function loading_template() {
 
 // populate table with current state
 function getState() {
-    console.log("Load start");
     $table.bootstrapTable('showLoading');
     console.log("Fetching supplier table state");
     // ajax call to suppliers api
@@ -51,7 +59,8 @@ function getState() {
         suppliers = data.reverse();
         console.log("Response: ", suppliers);
         // inject html for table use load for event listener
-        setTimeout(() => {$table.bootstrapTable('load', suppliers)}, 2000);
+        // temp timeout for load wheel debug
+        setTimeout(() => {$table.bootstrapTable('load', suppliers)}, 1000);
     }).catch(() => {
         console.error("API request failed");
         alert("API Request Failed");
@@ -61,6 +70,22 @@ function getState() {
 // spawn supplier form modal
 function add(event) {
     event.preventDefault();
+    $('#supplierModal').modal();
+    $post.prop("hidden", false);
+    $put.prop("hidden", true);
+}
+
+function edit(event) {
+    event.preventDefault();
+    // let id = get_id_selection();
+    suppliers.forEach(supplier => {
+        if (supplier.state === true) {
+            $('#supplierName').val(supplier.name);
+            $('#supplierWebsite').val(supplier.website);
+        }
+    });
+    $post.prop("hidden", true);
+    $put.prop("hidden", false);
     $('#supplierModal').modal();
 }
 
@@ -103,31 +128,49 @@ function post_supplier(event) {
     })
 }
 
+// put new supplier
+function put_supplier(event) {
+    console.log("Validating supplier form");
+    event.preventDefault();
+    // basic form validation
+    var error_flag = false;
+    $('#supplierForm input').each(function (index, val) {
+        if ($(this).val() === '') {
+            error_flag = true;
+        }
+    });
+    if (error_flag == true) {
+        console.error("Validation failed");
+        alert("Enter all required fields");
+        return false;
+    }
+}
+
 // delete one or more suppliers
-// FIX: async callbacks
 function delete_supplier(event) {
     event.preventDefault();
     var ids = get_id_selection();
-    // start delete request
-    $.when(
-        ids.forEach(id => {
-            let endpoint = `${suppliers_endpoint}${id}`;
-            console.log(`API DELETE ${endpoint}`);
+    var promises = []
+    // compile promises
+    ids.forEach(id => {
+        let endpoint = `${suppliers_endpoint}${id}`;
+        console.log(`API DELETE ${endpoint}`);
+        promises.push(
             $.ajax({
                 url: endpoint,
                 type: 'DELETE',
                 dataType: 'json',
-                success: function(response) {
-                    console.log(response);
-                },
+                success: function() {},
                 error: function(response) {
                     console.log(response);
                     console.error("API request failed");
                     alert("API Request Failed");
                 }
-            });
-        })
-    ).then( () => {
+            })
+        );
+    })
+    console.log("Promises: ", promises);
+    Promise.all(promises).then( () => {
         getState();
         $remove.prop('disabled', true);
     })
