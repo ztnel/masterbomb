@@ -7,16 +7,17 @@
     />
     <%- include('../components/head') %>
   </head>
-  <header><%- include('../components/header') %></header>
+  <header><%- include('../components/nav') %></header>
   <body>
     <div class="container-fluid">
       <h1>
         Suppliers
         <small class="text-muted"> List of part retailers</small>
       </h1>
-      <div class="btn-group d-flex add-btn" role="group" aria-label="...">
+      <div id="toolbar">
         <%- include('../components/buttons/addbtn', {id: "addSupplier"}) %> <%-
-        include('../components/buttons/deletebtn', {id:"deleteSupplier"}) %>
+        include('../components/buttons/editbtn', {id:"editSupplier"}) %> <%-
+        include('../components/buttons/deletebtn', {id: "deleteSupplier"}) %>
       </div>
       <div class="table-responsive-sm">
         <table
@@ -24,7 +25,9 @@
           class="table table-dark table-bordered table-hover"
           data-checkbox-header="true"
           data-click-to-select="true"
+          data-search="true"
           data-loading-template="loading_template"
+          data-toolbar="#toolbar"
         >
           <thead>
             <tr>
