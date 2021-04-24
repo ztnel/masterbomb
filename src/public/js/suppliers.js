@@ -1,13 +1,13 @@
 // global suppliers state
 const suppliers_endpoint = '/v1/suppliers/';
-var suppliers = [];
 var $table = $('#suppliersTable').bootstrapTable();
 var $remove = $('#deleteSupplier');
 var $add = $('#addSupplier');
 var $edit = $('#editSupplier');
-var $post = $('#postSupplier');
-var $put = $('#putSupplier');
+var $post = $('#post');
+var $put = $('#put');
 var selections = [];
+var suppliers = [];
 
 // DOM Ready
 $(() => {
@@ -17,9 +17,6 @@ $(() => {
     $edit.on('click', edit); 
     $put.on('click', put_supplier);
     $remove.on('click', delete_supplier);
-    // disable conditional buttons
-    $remove.prop('disabled', true);
-    $edit.prop('disabled', true);
     // register table events
     $table.on('check.bs.table uncheck.bs.table ' + 'check-all.bs.table uncheck-all.bs.table',function () {
         $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
@@ -32,7 +29,7 @@ $(() => {
         $table.bootstrapTable('hideLoading');
     });
     console.log("Suppliers DOM Ready");
-    getState();
+    get_state();
 });
 
 // get the ids of all selected elements
@@ -47,7 +44,7 @@ function loading_template() {
 }
 
 // populate table with current state
-function getState() {
+function get_state() {
     $table.bootstrapTable('showLoading');
     console.log("Fetching supplier table state");
     // ajax call to suppliers api
@@ -65,6 +62,9 @@ function getState() {
         console.error("API request failed");
         alert("API Request Failed");
     });
+    // manually reset remove and edit options since the table selections are cleared on reload
+    $remove.prop('disabled', true);
+    $edit.prop('disabled', true);
 }
 
 // spawn supplier form modal
@@ -79,7 +79,7 @@ function add(event) {
     // set title
     $('#modalTitle').text("Add New Supplier");
     // spawn modal
-    $('#supplierModal').modal();
+    $('#formModal').modal();
 }
 
 function edit(event) {
@@ -95,7 +95,7 @@ function edit(event) {
     $put.prop("hidden", false);
     // set title
     $('#modalTitle').text("Edit Supplier");
-    $('#supplierModal').modal();
+    $('#formModal').modal();
 }
 
 // post new supplier
@@ -128,9 +128,9 @@ function post_supplier(event) {
        // clear fields
        $('#supplierForm input').val('');
        // hide modal
-       $('#supplierModal').modal('toggle');
+       $('#formModal').modal('toggle');
        // rerequest get requests
-       getState();
+       get_state();
     }).catch(() => {
         console.error("API request failed");
         alert("API Request Failed");
@@ -169,9 +169,9 @@ function put_supplier(event) {
             // clear fields
             $('#supplierForm input').val('');
             // hide modal
-            $('#supplierModal').modal('toggle');
+            $('#formModal').modal('toggle');
             // rerequest get requests
-            getState();
+            get_state();
         },
         error: (xhr) => {
             console.error(`API request failed with status code: ${xhr.status}`);
@@ -205,7 +205,6 @@ function delete_supplier(event) {
     })
     console.log("Promises: ", promises);
     Promise.all(promises).then( () => {
-        getState();
-        $remove.prop('disabled', true);
+        get_state();
     })
 }
