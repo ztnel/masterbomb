@@ -35,6 +35,10 @@ h1 {
   border: 1px solid #3e4144;
 }
 
+thead {
+  background-color: rgb(125, 137, 146); 
+}
+
 /* dark mode for modals */
 .modal-content {
   background-color: rgb(40, 46, 51);
