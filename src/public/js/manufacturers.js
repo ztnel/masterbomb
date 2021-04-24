@@ -2,24 +2,22 @@
 const manufacturers_endpoint = '/v1/manufacturers/';
 var manufacturers = [];
 var $table = $('#manufacturersTable').bootstrapTable();
-var $remove = $('#deleteManufacturers');
-var $add = $('#addManufacturers');
-var $edit = $('#editManufacturers');
-var $post = $('#postManufacturers');
-var $put = $('#putManufacturers');
+var $remove = $('#deleteManufacturer');
+var $add = $('#addManufacturer');
+var $edit = $('#editManufacturer');
+var $post = $('#post');
+var $put = $('#put');
 var selections = [];
 
 // DOM Ready
 $(() => {
+    // navbar page highlight
     $('#nav-item-manufacturers').addClass('active');
     $add.on('click', add);
     $post.on('click', post_manufacturer);
     $edit.on('click', edit); 
     $put.on('click', put_manufacturer);
     $remove.on('click', delete_manufacturer);
-    // disable conditional buttons
-    $remove.prop('disabled', true);
-    $edit.prop('disabled', true);
     // register table events
     $table.on('check.bs.table uncheck.bs.table ' + 'check-all.bs.table uncheck-all.bs.table',function () {
         $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
@@ -32,7 +30,7 @@ $(() => {
         $table.bootstrapTable('hideLoading');
     });
     console.log("Manufacturers DOM Ready");
-    getState();
+    get_state();
 });
 
 // get the ids of all selected elements
@@ -47,7 +45,7 @@ function loading_template() {
 }
 
 // populate table with current state
-function getState() {
+function get_state() {
     $table.bootstrapTable('showLoading');
     console.log("Fetching manufacturer table state");
     // ajax call to manufacturers api
@@ -65,6 +63,9 @@ function getState() {
         console.error("API request failed");
         alert("API Request Failed");
     });
+    // manually reset remove and edit options since the table selections are cleared on reload
+    $remove.prop('disabled', true);
+    $edit.prop('disabled', true);
 }
 
 // spawn manufacturer form modal
@@ -79,7 +80,7 @@ function add(event) {
     // set title
     $('#modalTitle').text("Add New Manufacturer");
     // spawn modal
-    $('#manufacturerModal').modal();
+    $('#formModal').modal();
 }
 
 function edit(event) {
@@ -87,15 +88,14 @@ function edit(event) {
     // inputs reflect selection
     manufacturers.forEach(manufacturer => {
         if (manufacturer.state === true) {
-            $('#manufacturerName').val(supplier.name);
-            $('#manufacturerWebsite').val(supplier.website);
+            $('#manufacturerName').val(manufacturer.name);
         }
     });
     $post.prop("hidden", true);
     $put.prop("hidden", false);
     // set title
     $('#modalTitle').text("Edit Manufacturer");
-    $('#manufacturerModal').modal();
+    $('#formModal').modal();
 }
 
 // post new manufacturer
@@ -127,9 +127,9 @@ function post_manufacturer(event) {
        // clear fields
        $('#manufacturerForm input').val('');
        // hide modal
-       $('#manufacturerModal').modal('toggle');
+       $('#formModal').modal('toggle');
        // rerequest get requests
-       getState();
+       get_state();
     }).catch(() => {
         console.error("API request failed");
         alert("API Request Failed");
@@ -155,8 +155,7 @@ function put_manufacturer(event) {
     // here only a single id field can be selected so this getter is safe
     const manufacturer_payload = {
         'id': get_id_selection()[0],
-        'name': $('#manufacturerForm #supplierName').val(),
-        'website': $('#manufacturerForm #supplierWebsite').val()
+        'name': $('#manufacturerForm #manufacturerName').val(),
     };
     console.log(`API POST ${manufacturers_endpoint} with: `, {...manufacturer_payload});
     $.ajax({
@@ -168,9 +167,9 @@ function put_manufacturer(event) {
             // clear fields
             $('#manufacturerForm input').val('');
             // hide modal
-            $('#manufacturerModal').modal('toggle');
+            $('#formModal').modal('toggle');
             // rerequest get requests
-            getState();
+            get_state();
         },
         error: (xhr) => {
             console.error(`API request failed with status code: ${xhr.status}`);
@@ -204,7 +203,6 @@ function delete_manufacturer(event) {
     })
     console.log("Promises: ", promises);
     Promise.all(promises).then( () => {
-        getState();
-        $remove.prop('disabled', true);
+        get_state();
     })
 }
