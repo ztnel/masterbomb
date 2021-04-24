@@ -1,7 +1,7 @@
 <!-- Modal Component -->
 <div
   class="modal fade"
-  id="supplierModal"
+  id="formModal"
   tabindex="-1"
   role="dialog"
   aria-labelledby="addFormTitle"
@@ -22,25 +22,17 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body"><%- include('../components/form') %></div>
+      <div class="modal-body">
+        <%- include(`../components/forms/${form}`) %>
+      </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">
           Cancel
         </button>
-        <button
-          id="postSupplier"
-          type="button"
-          class="btn btn-success"
-          hidden="true"
-        >
+        <button id="post" type="button" class="btn btn-success" hidden="true">
           Add
         </button>
-        <button
-          id="putSupplier"
-          type="button"
-          class="btn btn-success"
-          hidden="true"
-        >
+        <button id="put" type="button" class="btn btn-success" hidden="true">
           Update
         </button>
       </div>
