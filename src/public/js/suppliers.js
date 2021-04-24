@@ -14,8 +14,8 @@ $(() => {
     $('#nav-item-suppliers').addClass('active');
     $add.on('click', add);
     $post.on('click', post_supplier);
+    $edit.on('click', edit); 
     $put.on('click', put_supplier);
-    $edit.on('click', edit);
     $remove.on('click', delete_supplier);
     // disable conditional buttons
     $remove.prop('disabled', true);
@@ -134,7 +134,7 @@ function post_supplier(event) {
     }).catch(() => {
         console.error("API request failed");
         alert("API Request Failed");
-    })
+    });
 }
 
 // put new supplier
@@ -153,6 +153,31 @@ function put_supplier(event) {
         alert("Enter all required fields");
         return false;
     }
+    // here only a single id field can be selected so this getter is safe
+    const supplier_payload = {
+        'id': get_id_selection()[0],
+        'name': $('#supplierForm #supplierName').val(),
+        'website': $('#supplierForm #supplierWebsite').val()
+    };
+    console.log(`API POST ${suppliers_endpoint} with: `, {...supplier_payload});
+    $.ajax({
+        type: 'PUT',
+        data: supplier_payload,
+        url: suppliers_endpoint,
+        dataType:'JSON',
+        success: () => {
+            // clear fields
+            $('#supplierForm input').val('');
+            // hide modal
+            $('#supplierModal').modal('toggle');
+            // rerequest get requests
+            getState();
+        },
+        error: (xhr) => {
+            console.error(`API request failed with status code: ${xhr.status}`);
+            alert("API Request Failed");
+        }
+    });
 }
 
 // delete one or more suppliers
