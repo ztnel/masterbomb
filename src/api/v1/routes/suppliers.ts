@@ -76,6 +76,30 @@ suppliersRouter.post('/', async (request:Request, response:Response):Promise<Res
     return response;
 });
 
+/** PUT /v1/suppliers/ */
+suppliersRouter.put('/', async (request:Request, response:Response):Promise<Response> => {
+    try {
+        const db = postgres.get_db();
+        await db.none(`
+            UPDATE suppliers SET name = $[name], website = $[website]
+            WHERE id = $[id]`,
+            { ...request.body }
+        );
+        // use .send() to send empty response body for 204
+        response.status(204).send();
+    } catch (err) {
+        console.error(err);
+        if (err instanceof errors.QueryResultError) {
+            // not sure what status code to return here but it boils down to a bad request
+            console.error("pg-promise rejected with " + err + "message: " + err.message);
+            response.status(401).json({error: 'Bad Request' });
+        } else {
+            response.status(500).json({ error: 'The server experienced an internal error' });
+        }
+    }
+    return response;
+});
+
 /** DELETE /v1/suppliers/:id */
 suppliersRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
     if (pk_guard(request.params)) {
