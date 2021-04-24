@@ -12,6 +12,7 @@ import { postgres } from '../../../db';
 import { pk_guard } from '../interfaces/params';
 
 const suppliersRouter = Router();
+const table = "suppliers";
 
 /** GET /v1/suppliers/ */
 suppliersRouter.get('/', async (_request:Request, response:Response):Promise<Response> => {
@@ -19,7 +20,7 @@ suppliersRouter.get('/', async (_request:Request, response:Response):Promise<Res
         // get database passed by request object
         const db = postgres.get_db();
         const suppliers = await db.any(`
-            SELECT id, name, website FROM suppliers`
+            SELECT id, name, website FROM ${table}`
         );
         response.json(suppliers);
     } catch (err) {
@@ -37,7 +38,7 @@ suppliersRouter.get('/:id', async (request:Request, response:Response):Promise<R
         try {
             // using db.one as we expect to get at a single row to be returned
             const suppliers = await db.one(`
-                SELECT id, name, website FROM suppliers
+                SELECT id, name, website FROM ${table}
                 WHERE id = $[id]`,
                 { id: request.params.id }
             );
@@ -63,7 +64,7 @@ suppliersRouter.post('/', async (request:Request, response:Response):Promise<Res
         // get database passed by request object
         const db = postgres.get_db();
         const id = await db.one(`
-            INSERT INTO suppliers( name, website )
+            INSERT INTO ${table}( name, website )
             VALUES( $[name], $[website] )
             RETURNING id;`,
             {...request.body}
@@ -81,7 +82,7 @@ suppliersRouter.put('/', async (request:Request, response:Response):Promise<Resp
     try {
         const db = postgres.get_db();
         await db.none(`
-            UPDATE suppliers SET name = $[name], website = $[website]
+            UPDATE ${table} SET name = $[name], website = $[website]
             WHERE id = $[id]`,
             { ...request.body }
         );
@@ -107,7 +108,7 @@ suppliersRouter.delete('/:id', async (request:Request, response:Response):Promis
             // get database passed by request object
             const db = postgres.get_db();
             const id = await db.result(`
-                DELETE FROM suppliers
+                DELETE FROM ${table}
                 WHERE id = $[id]`,
                 { id: request.params.id }, (r:any) => r.rowCount
             );
