@@ -70,14 +70,21 @@ function getState() {
 // spawn supplier form modal
 function add(event) {
     event.preventDefault();
-    $('#supplierModal').modal();
+    // clear inputs set button
+    $('#supplierForm input').each(function (index, val) {
+        $(this).val('');
+    });
     $post.prop("hidden", false);
     $put.prop("hidden", true);
+    // set title
+    $('#modalTitle').text("Add New Supplier");
+    // spawn modal
+    $('#supplierModal').modal();
 }
 
 function edit(event) {
     event.preventDefault();
-    // let id = get_id_selection();
+    // inputs reflect selection
     suppliers.forEach(supplier => {
         if (supplier.state === true) {
             $('#supplierName').val(supplier.name);
@@ -86,6 +93,8 @@ function edit(event) {
     });
     $post.prop("hidden", true);
     $put.prop("hidden", false);
+    // set title
+    $('#modalTitle').text("Edit Supplier");
     $('#supplierModal').modal();
 }
 
