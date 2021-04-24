@@ -12,6 +12,7 @@ import { postgres } from '../../../db';
 import { pk_guard } from '../interfaces/params';
 
 const manufacturersRouter = Router();
+const table = "manufacturers";
 
 /** GET /v1/manufacturers/ */
 manufacturersRouter.get('/', async (_request:Request, response:Response):Promise<Response> => {
@@ -19,7 +20,7 @@ manufacturersRouter.get('/', async (_request:Request, response:Response):Promise
         const db = postgres.get_db();
         // FIX: do not query using * in application runtime, explicitly specify cols to reduce db traffic
         const manufacturers = await db.any(`
-            SELECT id, name FROM manufacturers`
+            SELECT id, name FROM ${table}`
         );
         response.json(manufacturers);
     } catch (err) {
@@ -35,7 +36,7 @@ manufacturersRouter.get('/:id', async (request:Request, response:Response):Promi
         try {
             const db = postgres.get_db();
             const manufacturers = await db.one(`
-                SELECT id, name FROM manufacturers
+                SELECT id, name FROM ${table}
                 WHERE id = $[id]`,
                 { id: request.params.id }
             );
@@ -60,7 +61,7 @@ manufacturersRouter.post('/', async (request:Request, response:Response):Promise
     try {
         const db = postgres.get_db();
         const id = await db.one(`
-            INSERT INTO manufacturers( name )
+            INSERT INTO ${table}( name )
             VALUES( $[name] )
             RETURNING id;`,
             {...request.body}
@@ -73,13 +74,36 @@ manufacturersRouter.post('/', async (request:Request, response:Response):Promise
     return response;
 });
 
+/** PUT /v1/manufacturers/ */
+manufacturersRouter.put('/', async (request:Request, response:Response):Promise<Response> => {
+    try {
+        const db = postgres.get_db();
+        await db.none(`
+            UPDATE ${table} SET name = $[name] WHERE id = $[id]`,
+            { ...request.body }
+        );
+        // use .send() to send empty response body for 204
+        response.status(204).send();
+    } catch (err) {
+        console.error(err);
+        if (err instanceof errors.QueryResultError) {
+            // not sure what status code to return here but it boils down to a bad request
+            console.error("pg-promise rejected with " + err + "message: " + err.message);
+            response.status(401).json({error: 'Bad Request' });
+        } else {
+            response.status(500).json({ error: 'The server experienced an internal error' });
+        }
+    }
+    return response;
+});
+
 /** DELETE /v1/manufacturers/ */
 manufacturersRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
     if (pk_guard(request.params)) {
         try {
             const db = postgres.get_db();
             const id = await db.result(`
-                DELETE FROM manufacturers
+                DELETE FROM ${table}
                 WHERE id = $[id]`,
                 { id: request.params.id }, (r:any) => r.rowCount
             );

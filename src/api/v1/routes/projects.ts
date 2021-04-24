@@ -12,6 +12,7 @@ import { postgres } from '../../../db';
 import { pk_guard } from '../interfaces/params';
 
 const projectsRouter = Router();
+const table = "projects";
 
 /** GET /v1/projects/ */
 projectsRouter.get('/', async (_request:Request, response:Response):Promise<Response> => {
@@ -19,7 +20,7 @@ projectsRouter.get('/', async (_request:Request, response:Response):Promise<Resp
         const db = postgres.get_db();
         // FIX: do not query using * in application runtime, explicitly specify cols to reduce db traffic
         const projects = await db.any(`
-            SELECT id, name, description FROM projects`
+            SELECT id, name, description FROM ${table}`
         );
         response.json(projects);
     } catch (err) {
@@ -35,7 +36,7 @@ projectsRouter.get('/:id', async (request:Request, response:Response):Promise<Re
         try {
             const db = postgres.get_db();
             const projects = await db.one(`
-                SELECT id, name, description FROM projects
+                SELECT id, name, description FROM ${table}
                 WHERE id = $[id]`,
                 { id: request.params.id }
             );
@@ -60,7 +61,7 @@ projectsRouter.post('/', async (request:Request, response:Response):Promise<Resp
     try {
         const db = postgres.get_db();
         const id = await db.one(`
-            INSERT INTO projects( name, description )
+            INSERT INTO ${table}( name, description )
             VALUES( $[name], $[description] )
             RETURNING id;`,
             {...request.body}
@@ -73,13 +74,37 @@ projectsRouter.post('/', async (request:Request, response:Response):Promise<Resp
     return response;
 });
 
+/** PUT /v1/projects/ */
+projectsRouter.put('/', async (request:Request, response:Response):Promise<Response> => {
+    try {
+        const db = postgres.get_db();
+        await db.none(`
+            UPDATE ${table} SET name = $[name], description = $[description]
+            WHERE id = $[id]`,
+            { ...request.body }
+        );
+        // use .send() to send empty response body for 204
+        response.status(204).send();
+    } catch (err) {
+        console.error(err);
+        if (err instanceof errors.QueryResultError) {
+            // not sure what status code to return here but it boils down to a bad request
+            console.error("pg-promise rejected with " + err + "message: " + err.message);
+            response.status(401).json({error: 'Bad Request' });
+        } else {
+            response.status(500).json({ error: 'The server experienced an internal error' });
+        }
+    }
+    return response;
+});
+
 /** DELETE /v1/projects/:id */
 projectsRouter.delete('/:id', async (request:Request, response:Response):Promise<Response> => {
     if (pk_guard(request.params)) {
         try {
             const db = postgres.get_db();
             const id = await db.result(`
-                DELETE FROM projects
+                DELETE FROM ${table}
                 WHERE id = $[id]`,
                 { id: request.params.id }, (r:any) => r.rowCount
             );
