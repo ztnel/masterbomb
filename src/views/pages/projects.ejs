@@ -6,8 +6,44 @@
   <header><%- include('../components/nav') %></header>
   <body>
     <div class="container-fluid">
-      <h1>Nothing Here Yet...</h1>
+      <h1>
+        Projects
+        <small class="text-muted"> List of active projects</small>
+      </h1>
+      <div id="toolbar">
+        <%- include('../components/buttons/addbtn', {id: "addProject"}) %> <%-
+        include('../components/buttons/editbtn', {id:"editProject"}) %> <%-
+        include('../components/buttons/deletebtn', {id: "deleteProject"}) %>
+      </div>
+      <div class="table-responsive-sm">
+        <table
+          id="projectsTable"
+          class="table table-dark table-bordered table-hover"
+          data-checkbox-header="true"
+          data-click-to-select="true"
+          data-search="true"
+          data-loading-template="loading_template"
+          data-toolbar="#toolbar"
+        >
+          <thead>
+            <tr>
+              <th data-field="state" data-checkbox="true"></th>
+              <th data-field="id" scope="col">ID</th>
+              <th data-field="name" scope="col">Project</th>
+              <th data-field="description" scope="col">Description</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
     </div>
+    <%- include('../components/modal', {form: 'projects'}) %>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+    <script src="/js/projects.js"></script>
   </body>
-  <footer><%- include('../components/footer') %></footer>
+  <%- include('../components/footer') %>
 </html>
