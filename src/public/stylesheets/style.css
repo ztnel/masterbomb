@@ -50,7 +50,7 @@ thead {
   color: azure;
   background-color:rgb(41, 47, 53);
 }
-input[type=text]:focus, textarea:focus{
+input[type=number]:focus, input[type=text]:focus, textarea:focus{
   outline: 2px solid rgb(95, 182, 197);
   color: azure;
   background-color:rgb(23, 26, 29);
