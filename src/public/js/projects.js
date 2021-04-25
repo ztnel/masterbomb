@@ -73,6 +73,7 @@ function add(event) {
     $('#projectForm input').each(function (index, val) {
         $(this).val('');
     });
+    $('#projectForm textarea').val('');
     $post.prop("hidden", false);
     $put.prop("hidden", true);
     // set title
