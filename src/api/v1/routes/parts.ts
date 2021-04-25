@@ -16,10 +16,14 @@ const table = "parts";
 
 /** GET /v1/parts/ */
 partsRouter.get('/', async (_request:Request, response:Response):Promise<Response> => {
+    // getting the parts list requires the foreign keys to be queried and fetch their row names
     try {
         const db = postgres.get_db();
         const parts = await db.any(`
-            SELECT id, name, description, manufacturer_id, supplier_id, unit_price FROM ${table}`
+            SELECT id, name, description,
+            (SELECT name AS "supplier" FROM suppliers WHERE id=supplier_id),
+            (SELECT name AS "manufacturer" FROM manufacturers WHERE id=manufacturer_id),
+            unit_price FROM ${table}`
         );
         response.json(parts);
     } catch (err) {
