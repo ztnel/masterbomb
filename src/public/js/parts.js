@@ -1,6 +1,8 @@
 // global parts state
 const parts_endpoint = '/v1/parts/';
 var parts = [];
+var suppliers = [];
+var manufacturers = [];
 var $table = $('#partsTable').bootstrapTable();
 var $remove = $('#deletePart');
 var $add = $('#addPart');
@@ -56,9 +58,24 @@ function get_state() {
         // update global state
         parts = data.reverse();
         console.log("Response: ", parts);
-        // inject html for table use load for event listener
-        // temp timeout for load wheel debug
-        setTimeout(() => {$table.bootstrapTable('load', parts)}, 1000);
+        let suppliers_set = new Set(), manufacturers_set = new Set();
+        parts.forEach(part => {
+            !part.supplier_id ? console.warn(`Supplier ID for ${part} is null, skipping.`): suppliers_set.add(part.supplier_id);
+            !part.manufacturer_id ? console.warn(`Manufacturer ID for ${part} is null, skipping.`): manufacturers_set.add(part.manufacturer_id);
+        });
+        // update global state with supplier and manufacturers
+        update_fks(suppliers_set, manufacturers_set).then( () =>{
+            // replace ids in parts table with name identifiers
+            console.log(suppliers);
+            console.log(manufacturers);
+            parts.forEach(part => {
+                part.manufacturer = !is_empty(manufacturers) ? manufacturers.filter((mf) => {return (mf.id === part.manufacturer_id)})[0].name : undefined
+                part.supplier = !is_empty(suppliers) ? suppliers.filter((s) => {return (s.id === part.supplier_id)})[0].name : undefined
+            });
+            // temp timeout for load wheel debug
+            setTimeout(() => {$table.bootstrapTable('load', parts)}, 1000);
+            console.log("Compiled Response: ", parts);
+        });
     }).catch(() => {
         console.error("API request failed");
         alert("API Request Failed");
@@ -66,6 +83,46 @@ function get_state() {
     // manually reset remove and edit options since the table selections are cleared on reload
     $remove.prop('disabled', true);
     $edit.prop('disabled', true);
+}
+
+function is_empty(arr) {
+    return arr === undefined || arr.length == 0;
+}
+
+async function update_fks(suppliers_set, manufacturers_set) {
+    let suppliers_endpoint = '/v1/suppliers/'
+    let manufacturers_endpoint = '/v1/manufacturers/'
+    // compile ajax queries and end with promise.all
+    let promises = []
+    // fetch supplier names with id
+    suppliers_set.forEach(id => {
+        console.log(`API GET ${suppliers_endpoint}${id}`);
+        promises.push(
+            $.get({
+                url: `${suppliers_endpoint}${id}`
+            }).then((data) => {
+                suppliers.push(data);
+                console.log("Response: ", suppliers);
+            }).catch(() => {
+                console.error("API request failed");
+            })
+        );
+    })
+    // fetch manufacturer names with id
+    manufacturers_set.forEach(id => {
+        console.log(`API GET ${manufacturers_endpoint}${id}`);
+        promises.push(
+            $.get({
+                url: `${manufacturers_endpoint}${id}`
+            }).then((data) => {
+                manufacturers.push(data);
+                console.log("Response: ", manufacturers);
+            }).catch(() => {
+                console.error("API request failed");
+            })
+        );
+    })
+    return Promise.all(promises).then( () => {});
 }
 
 // spawn part form modal
@@ -89,6 +146,8 @@ function edit(event) {
     parts.forEach(part => {
         if (part.state === true) {
             $('#partName').val(part.name);
+            $('#partDesc').val(part.description);
+            $('#partUnitPrice').val(part.unit_price);
         }
     });
     $post.prop("hidden", true);
@@ -196,7 +255,6 @@ function delete_part(event) {
                 error: function(response) {
                     console.log(response);
                     console.error("API request failed");
-                    alert("API Request Failed");
                 }
             })
         );
