@@ -1,4 +1,4 @@
-<form>
+<form id="partForm">
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="partName">Name</label>
@@ -38,21 +38,23 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="supplierName">Supplier</label>
-      <input
-        type="text"
-        class="form-control"
-        id="supplierName"
-        placeholder="e.g. Digikey"
-      />
+      <select
+        class="form-control selectpicker"
+        id="supplier-picker"
+        data-live-search="true"
+      >
+        <option value="" selected disabled>Select Supplier</option>
+      </select>
     </div>
     <div class="form-group col-md-6">
       <label for="manufacturerName">Manufacturer</label>
-      <input
-        type="text"
-        class="form-control"
-        id="manufacturerName"
-        placeholder="e.g. Texas Instruments"
-      />
+      <select
+        class="form-control selectpicker"
+        id="manufacturer-picker"
+        data-live-search="true"
+      >
+        <option value="" selected disabled>Select Mannufacturer</option>
+      </select>
     </div>
   </div>
 </form>
