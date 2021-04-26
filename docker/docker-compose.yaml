@@ -17,6 +17,12 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile
+    environment: 
+      NODE_ENV: ${NODE_ENV}
+      PGHOST: ${PGHOST}
+      PGUSER: ${PGUSER}
+      PGDATABASE: ${PGDATABASE}
+      PGPORT: ${PGPORT}
     ports:
       - '${SERVER_PORT}:${SERVER_PORT}'
     depends_on:
