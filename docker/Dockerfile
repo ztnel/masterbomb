@@ -21,6 +21,9 @@ EXPOSE 3000
 # build the app
 RUN npm run build
 
+# HACK: initialize the database (should be using migrations)
+RUN npm run initdb
+
 # At the end, set the user to use when running this image
 USER node
 
