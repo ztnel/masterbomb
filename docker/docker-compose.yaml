@@ -10,3 +10,17 @@ services:
       POSTGRES_USER: ${PGUSER}
       POSTGRES_DB: ${PGDATABASE}
     image: postgres:latest
+    volumes:
+      - masterbom-db:/var/lib/postgresql/data
+  masterbom:
+    container_name: nodejs
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    ports:
+      - '${SERVER_PORT}:${SERVER_PORT}'
+    depends_on:
+      - postgresql
+
+volumes:
+  masterbom-db:
