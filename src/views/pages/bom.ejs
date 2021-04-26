@@ -1,48 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"
+    />
+
     <%- include('../components/head') %>
   </head>
   <header><%- include('../components/nav') %></header>
   <body>
     <div class="container-fluid">
-      <h1>Nothing Here Yet...</h1>
+      <h1>
+        MasterBOM
+        <small class="text-muted"> Bill of Materials by Project</small>
+      </h1>
+      <div id="toolbar">
+        <%- include('../components/buttons/addbtn', {id: "addBom"}) %> <%-
+        include('../components/buttons/editbtn', {id:"editBom"}) %> <%-
+        include('../components/buttons/deletebtn', {id: "deleteBom"}) %>
+      </div>
       <div class="table-responsive-sm">
-        <table class="table table-dark table-bordered table-hover">
-          <thead class="thead-light">
+        <table
+          id="bomTable"
+          class="table table-dark table-bordered table-hover"
+          data-checkbox-header="true"
+          data-click-to-select="true"
+          data-search="true"
+          data-loading-template="loading_template"
+          data-toolbar="#toolbar"
+        >
+          <thead>
             <tr>
-              <th scope="col">Part Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Supplier</th>
-              <th scope="col">Manufacturer</th>
-              <th scope="col">Unit Price ($)</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Net Price ($)</th>
+              <th data-field="state" data-checkbox="true"></th>
+              <th data-field="Project" scope="col">Project</th>
+              <th data-field="name" scope="col">Part</th>
+              <th data-field="description" scope="col">Description</th>
+              <th data-field="supplier" scope="col">Supplier</th>
+              <th data-field="manufacturer" scope="col">Manufacturer</th>
+              <th data-field="unit_price" scope="col">Unit Price ($)</th>
+              <th data-field="quantity" scope="col">Quantity</th>
+              <th data-field="net_price" scope="col">Net Price ($)</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>fuck</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Larry</td>
-              <td>the Bird</td>
-              <td>@twitter</td>
-            </tr>
-          </tbody>
         </table>
       </div>
     </div>
+    <%- include('../components/modal', {form: 'bom'}) %>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+      integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+    <script src="/js/bom.js"></script>
   </body>
-  <footer><%- include('../components/footer') %></footer>
+  <%- include('../components/footer') %>
 </html>
