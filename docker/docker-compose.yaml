@@ -3,14 +3,13 @@ version: '3.9'
 services:
   postgresql:
     image: postgres:latest
-    container_name: postgres
+    container_name: ${PGHOST} 
     ports:
-      - "${PGPORT}:${PGPORT}"
+      - '${PGPORT}:${PGPORT}'
     environment:
       POSTGRES_PASSWORD: ${PGPASSWORD}
       POSTGRES_USER: ${PGUSER}
       POSTGRES_DB: ${PGDATABASE}
-      PGHOST: ${PGHOST}
     volumes:
       - masterbom-db:/var/lib/postgresql/data
       - "./psql/initdb.sql:/docker-entrypoint-initdb.d/init.sql"
@@ -20,6 +19,7 @@ services:
     container_name: masterbom
     ports:
       - '${SERVER_PORT}:${SERVER_PORT}'
+    # env file specification required due to build context
     env_file: 
       - .env
     build:
