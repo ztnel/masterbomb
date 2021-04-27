@@ -53,6 +53,8 @@ if (process.env.PGDATABASE === undefined ||
     process.env.PGPORT === undefined ||
     process.env.PGUSER === undefined) {
     throw new Error("Database configuration fields invalid. Please check the .env file in root");
+} else {
+    console.log("Database environment passed validation")
 }
 
 export const postgres = new Postgres(process.env.PGDATABASE, process.env.PGHOST, process.env.PGPORT, process.env.PGUSER);
